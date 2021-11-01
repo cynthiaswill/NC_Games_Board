@@ -1,4 +1,5 @@
 const db = require('../connection.js');
+const format = require('pg-format');
 
 const seed = (data) => {
   const { categoryData, commentData, reviewData, userData } = data;
@@ -12,7 +13,19 @@ const seed = (data) => {
 
   // 1. create tables
   return db
-    .query(`DROP TABLE IF EXISTS categories;`)
+    .query(`DROP TABLE IF EXISTS comments;`)
+    .then(()=> {
+      return db
+      .query(`DROP TABLE IF EXISTS reviews;`)
+    })
+    .then(() => {
+      return db
+      .query(`DROP TABLE IF EXISTS users;`)
+    })
+    .then(() => {
+      return db
+      .query(`DROP TABLE IF EXISTS categories;`)
+    })
     .then(() => {
       return db
         .query(`CREATE TABLE categories (
@@ -22,19 +35,11 @@ const seed = (data) => {
     })
     .then(() => {
       return db
-        .query(`DROP TABLE IF EXISTS users;`)
-    })
-    .then(() => {
-      return db
         .query(`CREATE TABLE users (
           username VARCHAR PRIMARY KEY UNIQUE,
           avatar_url TEXT,
           name VARCHAR NOT NULL
         );`)
-    })
-    .then(() => {
-      return db
-        .query(`DROP TABLE IF EXISTS reviews;`)
     })
     .then(() => {
       return db
@@ -52,10 +57,6 @@ const seed = (data) => {
           ON DELETE SET NULL,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );`)
-    })
-    .then(() => {
-      return db
-        .query(`DROP TABLE IF EXISTS comments;`)
     })
     .then(() => {
       return db
