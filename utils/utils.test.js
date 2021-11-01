@@ -1,5 +1,4 @@
-const { TestWatcher } = require('@jest/core');
-const { createRef } = require('../utils/utils');
+const { createRef } = require('./utils');
 
 describe('createRef', () => {
     it('returns an empty object, when passed an empty array', () => {
