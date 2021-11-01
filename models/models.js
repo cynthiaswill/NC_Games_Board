@@ -13,3 +13,10 @@ exports.selectReviews = () => {
             return rows;
         });
 };
+
+exports.selectReviewById = (id) => {
+    return db.query(`SELECT * FROM reviews WHERE review_id = $1;`, [id])
+        .then(({ rows }) => {
+            return rows[0];
+        })
+}
