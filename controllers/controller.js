@@ -2,10 +2,9 @@ const {
     selectCategories
 }   = require('../models/models.js');
 
-exports.getCategories = (err, rec, res, next) => {
+exports.getCategories = (req, res, next) => {
     selectCategories().then(categories => {
-        console.log('in controllers')
-        res.send(categories);
+        res.send({ categories });
     })
     .catch(next)
 }
