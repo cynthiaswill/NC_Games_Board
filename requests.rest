@@ -4,4 +4,6 @@
 
 # GET http://localhost:9000/api/reviews
 
-GET http://localhost:9000/api/reviews/2
+# GET http://localhost:9000/api/reviews/2
+
+GET http://localhost:9000/api/reviews/9999
