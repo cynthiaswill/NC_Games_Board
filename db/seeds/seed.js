@@ -3,14 +3,6 @@ const format = require('pg-format');
 
 const seed = (data) => {
   const { categoryData, commentData, reviewData, userData } = data;
-  const createRef = (data, key, value) => {
-    const lookup = {};
-    for (let item of data) {
-        lookup[item[key]] = item[value];
-    }
-    return lookup;
-  };
-
   // 1. create tables
   return db
     .query(`DROP TABLE IF EXISTS comments;`)
