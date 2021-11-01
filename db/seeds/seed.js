@@ -8,17 +8,20 @@ const seed = async (data) => {
   await db.query(`DROP TABLE IF EXISTS users;`);
   await db.query(`DROP TABLE IF EXISTS categories;`);
    // 1. create tables
-  await db
-    .query(`CREATE TABLE categories (
-          slug VARCHAR PRIMARY KEY,
-          description TEXT
-        );`)
-  await db
-    .query(`CREATE TABLE users (
-          username VARCHAR PRIMARY KEY UNIQUE,
-          avatar_url TEXT,
-          name VARCHAR NOT NULL
-        );`)
+  const createCategories = () => {
+    db.query(`CREATE TABLE categories (
+      slug VARCHAR PRIMARY KEY,
+      description TEXT
+    );`)
+  }; 
+  const createUsers = () => {
+    db.query(`CREATE TABLE users (
+      username VARCHAR PRIMARY KEY UNIQUE,
+      avatar_url TEXT,
+      name VARCHAR NOT NULL
+    );`)
+  };
+  await Promise.all([createCategories(), createUsers()]);
   await db
     .query(`CREATE TABLE reviews (
           review_id SERIAL PRIMARY KEY,
