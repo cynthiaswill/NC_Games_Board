@@ -1,0 +1,3 @@
+# uncomment to send requests:
+
+GET http://localhost:9000/api/categories
