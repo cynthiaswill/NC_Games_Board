@@ -1,3 +1,4 @@
+const { TestWatcher } = require('@jest/core');
 const { createRef } = require('../utils/utils');
 
 describe('createRef', () => {
@@ -9,30 +10,59 @@ describe('createRef', () => {
       const expected = {};
       expect(actual).toEqual(expected);
     });
-    it('returns reference object that can be used to look up more flexible arguments, it returns a new array, original array not mutated', () => {
+
+    describe('testing reference object can be used to look up more flexible arguments', () => {
       const people = [
-        { name: 'vel', phoneNumber: '01134445566', address: 'Northcoders, Leeds' },
+        { name: 'vel',
+         phoneNumber: '01134445566',
+          address: 'Northcoders, Leeds'
+        },
         {
           name: 'ant',
           phoneNumber: '01612223344',
           address: 'Northcoders, Manchester'
         },
-        { name: 'mitch', phoneNumber: '07777777777', address: null }
+        { name: 'mitch',
+         phoneNumber: '07777777777',
+          address: null 
+        }
       ];
       const actual = createRef(people, 'name', 'phoneNumber');
-      const expected = { vel: '01134445566', ant: '01612223344', mitch: '07777777777' };
-      expect(actual).toEqual(expected);
-      expect(expected).not.toBe(people); // testing returns new array
-      expect(people).toEqual([
-        { name: 'vel', phoneNumber: '01134445566', address: 'Northcoders, Leeds' },
-        {
-          name: 'ant',
-          phoneNumber: '01612223344',
-          address: 'Northcoders, Manchester'
-        },
-        { name: 'mitch', phoneNumber: '07777777777', address: null }
-      ])      // testing not mutated original
-  
-      expect(createRef(people, 'name', 'address')).toEqual({ vel: 'Northcoders, Leeds', ant: 'Northcoders, Manchester', mitch: null })
-    });   // testing other parameters as arguments
+      const expected = { vel: '01134445566',
+            ant: '01612223344',
+            mitch: '07777777777' 
+        };
+        test('look up more flexible arguments returns correct lookup object', ()=> {
+            expect(actual).toEqual(expected);
+        })
+        test('createRef returns new array', ()=> {
+            expect(expected).not.toBe(people);
+        })
+        test('createRef not mutating original input', ()=> {
+            expect(people).toEqual([
+            { name: 'vel',
+            phoneNumber: '01134445566',
+            address: 'Northcoders, Leeds' 
+            },
+            {
+            name: 'ant',
+            phoneNumber: '01612223344',
+            address: 'Northcoders, Manchester'
+            },
+            { name: 'mitch',
+            phoneNumber: '07777777777',
+            address: null 
+            }
+            ]);
+        });
+            test('createRef testing other parameters as arguments returns correct result', ()=> {
+            expect(createRef(people, 'name', 'address'))
+            .toEqual({
+              vel: 'Northcoders, Leeds',
+              ant: 'Northcoders, Manchester',
+              mitch: null 
+            })
+        });
+    }); 
   });
+
