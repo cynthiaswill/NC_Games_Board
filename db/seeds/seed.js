@@ -56,7 +56,7 @@ const seed = async (data) => {
             return [category.slug, category.description];
           })
       );
-      await db.query(queryStr1);
+      const insertCats = db.query(queryStr1);
  
       const queryStr2 = format(
         `INSERT INTO users (username, name, avatar_url)
@@ -65,7 +65,7 @@ const seed = async (data) => {
             return [user.username, user.name, user.avatar_url];
           })
       );
-      await db.query(queryStr2);
+      const insertUsers = db.query(queryStr2);
 
       const queryStr3 = format(
         `INSERT INTO reviews 
@@ -75,7 +75,7 @@ const seed = async (data) => {
           return [review.title, review.designer, review.owner, review.review_img_url, review.review_body, review.category, review.created_at, review.votes];
         })
       );
-      await db.query(queryStr3);
+      const insertReviews = db.query(queryStr3);
 
       const queryStr4 = format(
         `INSERT INTO comments
@@ -85,7 +85,8 @@ const seed = async (data) => {
         return [comment.body, comment.votes, comment.author, comment.review_id, comment.created_at];
         })
       );
-      await db.query(queryStr4);
+      const insertComments = db.query(queryStr4);
+      await Promise.all([insertCats, insertUsers, insertReviews, insertComments]);
 };
 
 module.exports = seed;
