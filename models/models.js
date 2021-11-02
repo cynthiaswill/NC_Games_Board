@@ -21,7 +21,6 @@ exports.selectReviewById = async (id) => {
      WHERE reviews.review_id = $1 
      GROUP BY reviews.review_id;`
     const { rows } = await db.query(queryStr1, [id])
-    console.log(rows)
         if (rows.length === 0) {
             return Promise.reject({
                 status: '404',
@@ -31,3 +30,9 @@ exports.selectReviewById = async (id) => {
             return rows[0];
         }
 };
+
+exports.updateReview = async (id, vote) => {
+    const review = await db.query(`UPDATE reviews SET votes = votes + $2 
+        WHERE review_id = $1 RETURNING *`, [id, vote]);
+        return review.rows[0];
+}

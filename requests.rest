@@ -9,3 +9,8 @@
 # GET http://localhost:9000/api/reviews/9999
 
 # GET http://localhost:9000/api/reviews/not_an_review_id
+
+PATCH http://localhost:9000/api/reviews/2
+    Content-Type: application/json
+
+    { "inc_votes": -100 }
