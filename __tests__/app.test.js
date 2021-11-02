@@ -41,6 +41,7 @@ describe('app', () => {
                 .get('/api/reviews')
                 .expect(200)
                 .then(({ body }) => {
+                    console.log(body.reviews)
                     expect(body.reviews).toHaveLength(13);
                     body.reviews.forEach((review) => {
                         expect(review).toMatchObject({
@@ -99,6 +100,28 @@ describe('app', () => {
                     expect(body.msg).toBe('Bad request, invalid input')
                 })
         })
+
+        test('status 200 get review by id when there is no comment to count', () => {
+            return request(app)
+                .get('/api/reviews/13')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.review.review_id).toBe(13);
+                    expect(body.review.comment_count).toBe('0');
+                    expect(body.review).toEqual({
+                        review_id: 13,
+                        title: "Settlers of Catan: Don't Settle For Less",
+                        review_body: 'You have stumbled across an uncharted island rich in natural resources, but you are not alone; other adventurers have come ashore too, and the race to settle the island of Catan has begun! Whether you exert military force, build a road to rival the Great Wall, trade goods with ships from the outside world, or some combination of all three, the aim is the same: to dominate the island. Will you prevail? Proceed strategically, trade wisely, and may the odds be in favour.',
+                        designer: 'Klaus Teuber',
+                        review_img_url: 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg',
+                        votes: 16,
+                        category: 'social deduction',
+                        owner: 'mallionaire',
+                        created_at: '1970-01-10T02:08:38.400Z',
+                        comment_count: 0
+                      });
+                })
+        });
 
     })
         
