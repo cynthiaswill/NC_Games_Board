@@ -3,7 +3,6 @@ const testData = require('../db/data/test-data/index.js');
 const  seed  = require('../db/seeds/seed.js');
 const request = require('supertest');
 const app = require('../app');
-const { string } = require('pg-format');
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -18,7 +17,7 @@ describe('app', () => {
             });
     });
 
-    describe('/api/categories', () => {
+    describe('GET /api/categories', () => {
         test('status 200 returns all categories correctly', () => {
             return request(app)
                 .get('/api/categories')
@@ -35,7 +34,7 @@ describe('app', () => {
         })
     })
 
-    describe('/api/reviews', () => {
+    describe('GET /api/reviews', () => {
         test('status 200 returns all reviews correctly', () => {
             return request(app)
                 .get('/api/reviews')
@@ -59,7 +58,7 @@ describe('app', () => {
         })
     })
 
-    describe('/api/reviews/:review_id', () => {
+    describe('GET /api/reviews/:review_id', () => {
         test('status 200 returns get review by id correctly', () => {
             return request(app)
                 .get('/api/reviews/2')
@@ -121,9 +120,36 @@ describe('app', () => {
                       });
                 })
         });
-
     })
         
+    describe(`PATCH /api/reviews/:review_id`, () => {
+        test(`status 200 returns patched review with votes correctly`, () => {
+            return request(app)
+                .patch(`/api/reviews/2`)
+                .send({ "inc_votes": -100 })
+                .expect(200)
+                .then( ({ body }) => {
+                    console.log(body)
+                    expect(body.review).toEqual({
+                        review_id: 2,
+                        title: 'Jenga',
+                        review_body: 'Fiddly fun for all the family',
+                        designer: 'Leslie Scott',
+                        review_img_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                        votes: -95,
+                        category: 'dexterity',
+                        owner: 'philippaclaire9',
+                        created_at: '2021-01-18T10:01:41.251Z'
+                      })
+                })
+        })
+
+
+
+
+
+
+    })
     
 
 })
