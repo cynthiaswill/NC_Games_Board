@@ -87,7 +87,18 @@ describe('app', () => {
                     expect(body.msg).toBe('This review does not exist!')
                 })
         })
+
+        test('status 400 bad request invalid review_id', () => {
+            return request(app)
+                .get('/api/reviews/not_a_review_id')
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request, invalid input')
+                })
+        })
+
     })
+        
     
 
 })
