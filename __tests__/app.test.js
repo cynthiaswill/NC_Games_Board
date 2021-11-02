@@ -65,6 +65,8 @@ describe('app', () => {
                 .get('/api/reviews/2')
                 .expect(200)
                 .then(({ body }) => {
+                    expect(body.review.review_id).toBe(2);
+                    expect(body.review.comment_count).toBe('3');
                     expect(body.review).toEqual({
                             review_id: 2,
                             title: 'Jenga',
@@ -74,7 +76,8 @@ describe('app', () => {
                             votes: 5,
                             category: 'dexterity',
                             owner: 'philippaclaire9',
-                            created_at: '2021-01-18T10:01:41.251Z'
+                            created_at: '2021-01-18T10:01:41.251Z',
+                            comment_count: '3'
                     });
                 })
         });
