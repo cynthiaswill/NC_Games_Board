@@ -41,7 +41,6 @@ describe('app', () => {
                 .get('/api/reviews')
                 .expect(200)
                 .then(({ body }) => {
-                    console.log(body.reviews)
                     expect(body.reviews).toHaveLength(13);
                     body.reviews.forEach((review) => {
                         expect(review).toMatchObject({
@@ -118,7 +117,7 @@ describe('app', () => {
                         category: 'social deduction',
                         owner: 'mallionaire',
                         created_at: '1970-01-10T02:08:38.400Z',
-                        comment_count: 0
+                        comment_count: '0'
                       });
                 })
         });
