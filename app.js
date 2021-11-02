@@ -1,6 +1,6 @@
 const express = require('express');
 const apiRouter = require('./routers/api.router');
-const { handle404, handlePSQL } = require('./controllers/error.controller');
+const { handle404, handle400 } = require('./controllers/error.controller');
 
 const app = express();
 
@@ -13,6 +13,6 @@ app.use('*', (req, res) => {
 })
 
 app.use(handle404);
-app.use(handlePSQL);
+app.use(handle400);
 
 module.exports = app;
