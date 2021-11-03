@@ -262,6 +262,15 @@ describe('app', () => {
               });
           });
 
+          test("status 400 query with invalid order value", () => {
+            return request(app)
+              .get("/api/reviews?sort_by=title&&order=not_an_order")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request or invalid input');
+              });
+          });
+
     }) 
    
 
