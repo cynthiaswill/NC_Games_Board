@@ -341,6 +341,15 @@ describe('app', () => {
                 })
         })
 
+        test('status 400 invalid review_id = invalid_id', () => {
+            return request(app)
+                .get('/api/reviews/invalid_id/comments')
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input')
+                })
+        })
+
     })
 })
     
