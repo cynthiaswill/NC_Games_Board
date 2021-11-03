@@ -182,6 +182,26 @@ describe('app', () => {
                       })
                 })
         })
+
+        test('status 404 review_id = 9999 does not exist in database', () => {
+            return request(app)
+                .patch('/api/reviews/9999')
+                .send({ "inc_votes": 3 })
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('This review does not exist!')
+                })
+        })
+
+        test('status 400 bad request invalid review_id', () => {
+            return request(app)
+                .patch('/api/reviews/not_a_review_id')
+                .send({ "inc_votes": 3 })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input')
+                })
+        })
     })
     
 
