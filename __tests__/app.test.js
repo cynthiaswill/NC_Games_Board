@@ -430,6 +430,25 @@ describe('app', () => {
                 })
         })
 
+        test('status 201 comment posted despite with some extra other property(which will be ignored) appear on POST request body', () => {
+            return request(app)
+                .post('/api/reviews/1/comments')
+                .send({ "username": "mallionaire", "body": "test", "something_else": "ignored" })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.comment.body).toBe('test')
+                    expect(body.comment.votes).toBe(0)
+                    expect(body.comment.author).toBe('mallionaire')
+                    expect(body.comment).toMatchObject({
+                        body: expect.any(String),
+                        votes: expect.any(Number),
+                        author: expect.any(String),
+                        review_id: expect.any(Number),
+                        created_at: expect.any(String)
+                    })
+                })
+        })
+
     })
 })
     
