@@ -163,7 +163,7 @@ describe('app', () => {
                 }) 
         })
 
-        test(`status 200 with some extra other property appear on request body in patch request`, () => {
+        test(`status 200 with some extra other property(which will be ignored) appear on request body in patch request`, () => {
             return request(app)
                 .patch(`/api/reviews/2`)
                 .send({ inc_votes : 1, name: 'Mitch' })
