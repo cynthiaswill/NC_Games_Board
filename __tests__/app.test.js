@@ -350,6 +350,14 @@ describe('app', () => {
                 })
         })
 
+        test('status 404 valid existing review_id with no associated comment', () => {
+            return request(app)
+                .get('/api/reviews/1/comments')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('No comment found')
+                })
+        })
     })
 })
     
