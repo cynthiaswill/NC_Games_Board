@@ -229,6 +229,30 @@ describe('app', () => {
                 })
         })
 
+        test('status 200 filter by category query takes sort by title query in ascending order', () => {
+            return request(app)
+                .get('/api/reviews?category=social%20deduction&&sort_by=title&&order=asc')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.reviews).toHaveLength(11);
+                    expect(body.reviews).toBeSortedBy('title')
+                    body.reviews.forEach((review) => {
+                        expect(review).toMatchObject({
+                            title: expect.any(String),
+                            designer: expect.any(String),
+                            owner: expect.any(String),
+                            review_img_url: expect.any(String),
+                            review_body: expect.any(String),
+                            category: expect.any(String),
+                            created_at: expect.any(String),
+                            votes: expect.any(Number),
+                            review_id: expect.any(Number),
+                            comment_count: expect.any(String)
+                        })
+                    })
+                })
+        })
+
     }) 
    
 
