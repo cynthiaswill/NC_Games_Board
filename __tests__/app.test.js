@@ -163,7 +163,25 @@ describe('app', () => {
                 }) 
         })
 
-
+        test(`status 200 with some extra other property appear on request body in patch request`, () => {
+            return request(app)
+                .patch(`/api/reviews/2`)
+                .send({ inc_votes : 1, name: 'Mitch' })
+                .expect(200)
+                .then( ({ body }) => {
+                    expect(body.review).toEqual({
+                        review_id: 2,
+                        title: 'Jenga',
+                        review_body: 'Fiddly fun for all the family',
+                        designer: 'Leslie Scott',
+                        review_img_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
+                        votes: 6,
+                        category: 'dexterity',
+                        owner: 'philippaclaire9',
+                        created_at: '2021-01-18T10:01:41.251Z'
+                      })
+                })
+        })
     })
     
 
