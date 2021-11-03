@@ -253,6 +253,15 @@ describe('app', () => {
                 })
         })
 
+        test("status 400 query of sort_by a column that does not exist", () => {
+            return request(app)
+              .get("/api/reviews?sort_by=not_a_column_name")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request: no such column!');
+              });
+          });
+
     }) 
    
 
