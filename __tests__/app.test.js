@@ -280,6 +280,15 @@ describe('app', () => {
               });
           });
 
+          test("status 404 with queried item cannot be found in database", () => {
+            return request(app)
+              .get("/api/reviews?category=non-existence")
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Item not found');
+              });
+          });
+
     }) 
    
 
