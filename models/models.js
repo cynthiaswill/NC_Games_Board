@@ -7,7 +7,7 @@ exports.selectCategories = async () => {
 
 exports.selectReviewById = async (id) => {   
     const queryStr = `SELECT reviews.*,
-     COALESCE(COUNT(comments.review_id),0)::INT AS comment_count FROM reviews 
+     COUNT(comments.review_id)::INT AS comment_count FROM reviews 
      LEFT JOIN comments ON reviews.review_id = comments.review_id 
      WHERE reviews.review_id = $1 
      GROUP BY reviews.review_id;`
@@ -45,7 +45,7 @@ exports.updateReview = async (id, vote) => {
 exports.selectReviews = async (sort = 'created_at', order = 'desc', category) => {
     let queryValues = [];
     let queryStr = `SELECT reviews.*,
-    COALESCE(COUNT(comments.review_id),0)::INT AS comment_count FROM reviews 
+    COUNT(comments.review_id)::INT AS comment_count FROM reviews 
     LEFT JOIN comments ON reviews.review_id = comments.review_id `
     if (category) {
         queryStr += ` WHERE category = $1`;

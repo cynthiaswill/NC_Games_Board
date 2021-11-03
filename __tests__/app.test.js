@@ -361,7 +361,7 @@ describe('app', () => {
     })
 
     describe('POST /api/reviews/:review_id/comments', () => {
-        test.only('status 201 return posted comment correctly', () => {
+        test('status 201 return posted comment correctly', () => {
             return request(app)
                 .post('/api/reviews/1/comments')
                 .send({ "username": "mallionaire", "body": "test" })
@@ -370,8 +370,26 @@ describe('app', () => {
                     expect(body.comment.body).toBe('test')
                     expect(body.comment.votes).toBe(0)
                     expect(body.comment.author).toBe('mallionaire')
+                    expect(body.comment).toMatchObject({
+                        body: expect.any(String),
+                        votes: expect.any(Number),
+                        author: expect.any(String),
+                        review_id: expect.any(Number),
+                        created_at: expect.any(String)
+                    })
                 })
         })
+
+        test('status 400 failed to post due to username does not exist', () => {
+            return request(app)
+                .post('/api/reviews/1/comments')
+                .send({ "username": "tester", "body": "test" })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Username does not exist!')
+                })
+        })
+
     })
 })
     
