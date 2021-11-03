@@ -95,7 +95,7 @@ describe('app', () => {
                 .get('/api/reviews/not_a_review_id')
                 .expect(400)
                 .then(({ body }) => {
-                    expect(body.msg).toBe('Bad request, invalid input')
+                    expect(body.msg).toBe('Bad request or invalid input')
                 })
         })
 
@@ -129,7 +129,6 @@ describe('app', () => {
                 .send({ "inc_votes": -100 })
                 .expect(200)
                 .then( ({ body }) => {
-                    console.log(body, '<<<<<<<<<<<<<<<<<<<<')
                     expect(body.review).toEqual({
                         review_id: 2,
                         title: 'Jenga',
@@ -151,11 +150,18 @@ describe('app', () => {
                 .expect(400)
                 .then(({ body }) => {
                     expect(body.msg).toBe('Bad request or invalid input');
-                })
-               
+                }) 
         })
 
-
+        test(`status 400 invalid inc_votes value on request body in patch request`, () => {
+            return request(app)
+                .patch(`/api/reviews/2`)
+                .send({ inc_votes: 'not-valid' })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input');
+                }) 
+        })
 
 
     })
