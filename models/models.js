@@ -21,18 +21,33 @@ exports.selectReviewById = async (id) => {
      WHERE reviews.review_id = $1 
      GROUP BY reviews.review_id;`
     const { rows } = await db.query(queryStr1, [id])
-        if (rows.length === 0) {
+        if (rows.length !== 0) {
+            return rows[0];
+        }   else {
             return Promise.reject({
                 status: '404',
                 msg: 'This review does not exist!'
             });
-        }   else {
-            return rows[0];
         }
 };
 
 exports.updateReview = async (id, vote) => {
     const review = await db.query(`UPDATE reviews SET votes = votes + $2 
         WHERE review_id = $1 RETURNING *`, [id, vote]);
-        return review.rows[0];
+        if (vote !== undefined) {
+             if (review.rows.length !== 0) {
+            return review.rows[0];
+        }   else {
+            return Promise.reject({ 
+                status: '404',
+                msg: 'This review does not exist!'
+            })
+        }
+        }   else {
+            return Promise.reject({ 
+                status: '400',
+                msg: 'Bad request or invalid input'
+            })
+        }
+       
 }

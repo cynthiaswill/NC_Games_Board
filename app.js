@@ -1,6 +1,6 @@
 const express = require('express');
 const apiRouter = require('./routers/api.router');
-const { handle404, handle400 } = require('./controllers/error.controller');
+const { handleCustomErrors, handlePSQLErrors, handle500 } = require('./controllers/error.controller');
 
 const app = express();
 
@@ -12,7 +12,9 @@ app.use('*', (req, res) => {
     res.status(404).send({ msg: 'Invalid path' })
 })
 
-app.use(handle404);
-app.use(handle400);
+app.use(handleCustomErrors);
+app.use(handlePSQLErrors);
+
+app.use(handle500);
 
 module.exports = app;

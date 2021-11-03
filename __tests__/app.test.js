@@ -129,7 +129,7 @@ describe('app', () => {
                 .send({ "inc_votes": -100 })
                 .expect(200)
                 .then( ({ body }) => {
-                    console.log(body)
+                    console.log(body, '<<<<<<<<<<<<<<<<<<<<')
                     expect(body.review).toEqual({
                         review_id: 2,
                         title: 'Jenga',
@@ -144,7 +144,16 @@ describe('app', () => {
                 })
         })
 
-
+        test(`status 400 no inc_votes key on request body in patch request`, () => {
+            return request(app)
+                .patch(`/api/reviews/2`)
+                .send({ })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input');
+                })
+               
+        })
 
 
 
