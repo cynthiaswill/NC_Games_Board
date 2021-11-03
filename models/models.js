@@ -110,7 +110,7 @@ exports.insertComment = async (id, name, body) => {
     }   else if (name === null || body === null) {
         return Promise.reject({
             status: '400',
-            msg: 'username or post body cannot be null'
+            msg: 'Username or post body cannot be null!'
         });
     }   else {
         const { rows }= await db.query(queryStr, [body, name, id]);

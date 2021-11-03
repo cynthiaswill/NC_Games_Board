@@ -420,6 +420,16 @@ describe('app', () => {
                 })
         })
 
+        test('status 400 failed to post due to null value in username or body', () => {
+            return request(app)
+                .post('/api/reviews/1/comments')
+                .send({ "username": null, "body": null })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Username or post body cannot be null!')
+                })
+        })
+
     })
 })
     
