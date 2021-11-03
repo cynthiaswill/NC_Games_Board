@@ -271,6 +271,15 @@ describe('app', () => {
               });
           });
 
+          test("status 400 with invalid query type, query is not_a_query", () => {
+            return request(app)
+              .get("/api/reviews?not_a_query=nothing")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Invalid: not a query');
+              });
+          });
+
     }) 
    
 

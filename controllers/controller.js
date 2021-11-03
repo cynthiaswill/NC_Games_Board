@@ -40,6 +40,6 @@ exports.getReviews = (req, res, next) => {
     })
     .catch(next);
     } else {
-      return Promise.reject({status:'400', msg: 'Invalid query type'}).catch(next);
+      return Promise.reject({status:'400', msg: 'Invalid: not a query'}).catch(next);
     }
 };
