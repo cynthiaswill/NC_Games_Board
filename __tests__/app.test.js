@@ -3,6 +3,7 @@ const testData = require('../db/data/test-data/index.js');
 const  seed  = require('../db/seeds/seed.js');
 const request = require('supertest');
 const app = require('../app');
+const { deleteComment } = require('../controllers/controller.js');
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -449,6 +450,23 @@ describe('app', () => {
                 })
         })
 
+    })
+
+    describe('DELETE /api/comments/:comment_id', () => {
+        test('status 204 returns No content when deleted comment successfully', () => {
+            return request(app)
+                .delete('/api/comments/1')
+                .expect(204)
+        })
+
+        test('status 404 requested comment_to_be_deleted cannot be found', () => {
+            return request(app)
+                .delete('/api/comments/12')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('This comment_id does not exist!')
+                })
+        })
     })
 })
     

@@ -123,6 +123,18 @@ exports.insertComment = async (id, name, body) => {
         });
     }
     }
+}
 
-    
+exports.removeComment = async (id) => {
+    console.log(id)
+    const { rows } = await db
+    .query(`DELETE FROM comments WHERE comment_id = $1 RETURNING *;`, [id])
+    if (rows.length !== 0) {
+        return rows[0]
+    }   else {
+        return Promise.reject({
+            status: '404',
+            msg: 'This comment_id does not exist!'
+        });
+    }
 }
