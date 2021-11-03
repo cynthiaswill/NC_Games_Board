@@ -41,7 +41,7 @@ describe('app', () => {
                 .expect(200)
                 .then(({ body }) => {
                     expect(body.review.review_id).toBe(2);
-                    expect(body.review.comment_count).toBe('3');
+                    expect(body.review.comment_count).toBe(3);
                     expect(body.review).toEqual({
                             review_id: 2,
                             title: 'Jenga',
@@ -52,7 +52,7 @@ describe('app', () => {
                             category: 'dexterity',
                             owner: 'philippaclaire9',
                             created_at: '2021-01-18T10:01:41.251Z',
-                            comment_count: '3'
+                            comment_count: 3
                     });
                 })
         });
@@ -81,7 +81,7 @@ describe('app', () => {
                 .expect(200)
                 .then(({ body }) => {
                     expect(body.review.review_id).toBe(13);
-                    expect(body.review.comment_count).toBe('0');
+                    expect(body.review.comment_count).toBe(0);
                     expect(body.review).toEqual({
                         review_id: 13,
                         title: "Settlers of Catan: Don't Settle For Less",
@@ -92,7 +92,7 @@ describe('app', () => {
                         category: 'social deduction',
                         owner: 'mallionaire',
                         created_at: '1970-01-10T02:08:38.400Z',
-                        comment_count: '0'
+                        comment_count: 0
                       });
                 })
         });
@@ -199,7 +199,7 @@ describe('app', () => {
                             created_at: expect.any(String),
                             votes: expect.any(Number),
                             review_id: expect.any(Number),
-                            comment_count: expect.any(String)
+                            comment_count: expect.any(Number)
                         })
                     })
                 })
@@ -223,7 +223,7 @@ describe('app', () => {
                             created_at: expect.any(String),
                             votes: expect.any(Number),
                             review_id: expect.any(Number),
-                            comment_count: expect.any(String)
+                            comment_count: expect.any(Number)
                         })
                     })
                 })
@@ -247,7 +247,7 @@ describe('app', () => {
                             created_at: expect.any(String),
                             votes: expect.any(Number),
                             review_id: expect.any(Number),
-                            comment_count: expect.any(String)
+                            comment_count: expect.any(Number)
                         })
                     })
                 })
