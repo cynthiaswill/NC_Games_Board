@@ -16,3 +16,5 @@
 # GET http://localhost:9000/api/reviews
 
 # GET http://localhost:9000/api/reviews?category=dexterity&&sort_by=title&&order=asc
+
+GET http://localhost:9000/api/reviews/2/comments

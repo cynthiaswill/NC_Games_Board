@@ -2,7 +2,8 @@ const {
     selectCategories,
     selectReviews,
     selectReviewById,
-    updateReview
+    updateReview,
+    selectComments
 }   = require('../models/models.js');
 
 exports.getCategories = (req, res, next) => {
@@ -35,7 +36,7 @@ exports.getReviews = (req, res, next) => {
     const queryKeys = Object.keys(req.query);
    
     if (queryKeys.every( key => validQueries.includes(key))) {
-      selectReviews(sort_by, order, category).then((reviews) => {
+      selectReviews(sort_by, order, category).then(reviews => {
       res.send({ reviews });
     })
     .catch(next);
@@ -43,3 +44,12 @@ exports.getReviews = (req, res, next) => {
       return Promise.reject({status:'400', msg: 'Invalid: not a query'}).catch(next);
     }
 };
+
+exports.getComments = (req, res, next) => {
+    const { review_id } = req.params;
+
+    selectComments(review_id).then(comments => {
+        res.send({ comments })
+    })
+    .catch(next)
+}

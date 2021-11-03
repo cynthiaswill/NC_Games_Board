@@ -1,10 +1,8 @@
 const db = require('../db/connection');
 
-exports.selectCategories = () => {
-    return db.query(`SELECT * FROM categories;`)
-        .then(({rows}) => {
-            return rows;
-        });
+exports.selectCategories = async () => {
+    const { rows } = await db.query(`SELECT * FROM categories;`)
+        return rows;
 };
 
 exports.selectReviewById = async (id) => {   
@@ -69,3 +67,25 @@ exports.selectReviews = async (sort = 'created_at', order = 'desc', category) =>
              return rows;
           }
       }
+
+exports.selectComments = async (id) => {
+    const queryStr = `SELECT 
+        comments.comment_id, 
+        comments.votes, 
+        comments.created_at, 
+        comments.author, 
+        comments.body 
+        FROM comments 
+        LEFT JOIN users ON comments.author = users.username 
+        WHERE comments.review_id = $1`
+    const { rows } = await db.query(queryStr, [id])
+
+    if (rows.length !== 0) {
+        return rows;
+    }   else {
+        return Promise.reject({
+            status: '404',
+            msg: 'This review does not exist!'
+        });
+    }
+}
