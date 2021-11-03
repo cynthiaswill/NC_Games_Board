@@ -204,6 +204,31 @@ describe('app', () => {
                     })
                 })
         })
+
+        test('status 200 get reviews takes sort by title query in ascending order', () => {
+            return request(app)
+                .get('/api/reviews?sort_by=title&&order=asc')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.reviews).toHaveLength(13);
+                    expect(body.reviews).toBeSortedBy('title', { descending: false })
+                    body.reviews.forEach((review) => {
+                        expect(review).toMatchObject({
+                            title: expect.any(String),
+                            designer: expect.any(String),
+                            owner: expect.any(String),
+                            review_img_url: expect.any(String),
+                            review_body: expect.any(String),
+                            category: expect.any(String),
+                            created_at: expect.any(String),
+                            votes: expect.any(Number),
+                            review_id: expect.any(Number),
+                            comment_count: expect.any(String)
+                        })
+                    })
+                })
+        })
+
     }) 
    
 
