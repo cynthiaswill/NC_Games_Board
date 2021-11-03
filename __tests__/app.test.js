@@ -467,6 +467,16 @@ describe('app', () => {
                     expect(body.msg).toBe('This comment_id does not exist!')
                 })
         })
+
+        test('status 400 invalid comment_id such value is not a number', () => {
+            return request(app)
+                .delete('/api/comments/invalid_comment_id')
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input')
+                })
+        })
+
     })
 })
     
