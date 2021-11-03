@@ -2,8 +2,6 @@
 
 # GET http://localhost:9000/api/categories
 
-# GET http://localhost:9000/api/reviews
-
 # GET http://localhost:9000/api/reviews/2
 
 # GET http://localhost:9000/api/reviews/9999
@@ -14,3 +12,5 @@
 #     Content-Type: application/json
 
 #     { "inc_votes": -100 }
+
+GET http://localhost:9000/api/reviews
