@@ -181,12 +181,13 @@ describe('app', () => {
     }) 
     
     describe('GET /api/reviews', () => {
-        test('status 200 returns all reviews correctly', () => {
+        test('status 200 returns all reviews correctly default to desc by date', () => {
             return request(app)
                 .get('/api/reviews')
                 .expect(200)
                 .then(({ body }) => {
                     expect(body.reviews).toHaveLength(13);
+                    expect(body.reviews).toBeSortedBy('created_at', { descending: true })
                     body.reviews.forEach((review) => {
                         expect(review).toMatchObject({
                             title: expect.any(String),

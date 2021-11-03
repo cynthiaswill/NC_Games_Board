@@ -32,5 +32,10 @@
     "jest-sorted": "^1.0.12",
     "nodemon": "^2.0.14",
     "supertest": "^6.1.6"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "jest-sorted"
+    ]
   }
 }
