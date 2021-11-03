@@ -17,4 +17,9 @@
 
 # GET http://localhost:9000/api/reviews?category=dexterity&&sort_by=title&&order=asc
 
-GET http://localhost:9000/api/reviews/2/comments
+# GET http://localhost:9000/api/reviews/2/comments
+
+POST http://localhost:9000/api/reviews/2/comments
+    Content-Type: application/json
+
+    { "username": "mallionaire", "body": "test" }

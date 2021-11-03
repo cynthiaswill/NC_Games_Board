@@ -359,5 +359,19 @@ describe('app', () => {
                 })
         })
     })
+
+    describe('POST /api/reviews/:review_id/comments', () => {
+        test.only('status 201 return posted comment correctly', () => {
+            return request(app)
+                .post('/api/reviews/1/comments')
+                .send({ "username": "mallionaire", "body": "test" })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.comment.body).toBe('test')
+                    expect(body.comment.votes).toBe(0)
+                    expect(body.comment.author).toBe('mallionaire')
+                })
+        })
+    })
 })
     
