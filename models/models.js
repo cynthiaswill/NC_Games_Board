@@ -79,13 +79,19 @@ exports.selectComments = async (id) => {
         LEFT JOIN users ON comments.author = users.username 
         WHERE comments.review_id = $1`
     const { rows } = await db.query(queryStr, [id])
+    const reviewResult = await db.query(`SELECT * FROM reviews WHERE review_id = $1`, [id])
 
     if (rows.length !== 0) {
         return rows;
-    }   else {
+    }   else if (reviewResult.rows.length === 0) {
         return Promise.reject({
             status: '404',
-            msg: 'This review does not exist!'
+            msg: 'This review_id does not exist!'
+        });
+    }   else    {
+        return Promise.reject({
+            status: '404',
+            msg: 'No comment found'
         });
     }
 }

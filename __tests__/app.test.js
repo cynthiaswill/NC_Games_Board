@@ -331,6 +331,16 @@ describe('app', () => {
                     ])
                 })
         })
+
+        test('status 404 review_id = 9999 does not exist in database', () => {
+            return request(app)
+                .get('/api/reviews/9999/comments')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('This review_id does not exist!')
+                })
+        })
+
     })
 })
     
