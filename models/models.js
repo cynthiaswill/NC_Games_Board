@@ -101,14 +101,29 @@ exports.insertComment = async (id, name, body) => {
         (body, author, review_id)
         VALUES ($1, $2, $3)
         RETURNING *;`
-    const { rows }= await db.query(queryStr, [body, name, id]);
+
+    if (name === undefined || body === undefined) {
+        return Promise.reject({
+            status: '400',
+            msg: 'Invalid post request body'
+        });
+    }   else if (name === null || body === null) {
+        return Promise.reject({
+            status: '400',
+            msg: 'username or post body cannot be null'
+        });
+    }   else {
+        const { rows }= await db.query(queryStr, [body, name, id]);
     console.log(rows)
     if (rows.length !== 0) {
         return rows[0];
-    }   else {
+    }      else {
         return Promise.reject({
             status: '404',
             msg: 'This review_id does not exist!'
         });
     }
+    }
+
+    
 }

@@ -410,6 +410,16 @@ describe('app', () => {
                 })
         })
 
+        test('status 400 failed to post due to username or body does not exist in request body', () => {
+            return request(app)
+                .post('/api/reviews/1/comments')
+                .send({ })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Invalid post request body')
+                })
+        })
+
     })
 })
     
