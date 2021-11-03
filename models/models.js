@@ -114,7 +114,6 @@ exports.insertComment = async (id, name, body) => {
         });
     }   else {
         const { rows }= await db.query(queryStr, [body, name, id]);
-    console.log(rows)
     if (rows.length !== 0) {
         return rows[0];
     }      else {

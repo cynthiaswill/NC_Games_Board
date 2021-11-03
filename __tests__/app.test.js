@@ -360,7 +360,7 @@ describe('app', () => {
         })
     })
 
-    describe.only('POST /api/reviews/:review_id/comments', () => {
+    describe('POST /api/reviews/:review_id/comments', () => {
         test('status 201 return posted comment correctly', () => {
             return request(app)
                 .post('/api/reviews/1/comments')
