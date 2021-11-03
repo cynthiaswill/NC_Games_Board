@@ -7,17 +7,10 @@ exports.selectCategories = () => {
         });
 };
 
-exports.selectReviews = () => {
-    return db.query(`SELECT * FROM reviews;`)
-        .then(({ rows }) => {
-            return rows;
-        });
-};
-
 exports.selectReviewById = async (id) => {   
     const queryStr1 = `SELECT reviews.*,
      COALESCE(COUNT(comments.review_id),0) AS comment_count FROM reviews 
-     LEFT OUTER JOIN comments ON reviews.review_id = comments.review_id 
+     LEFT JOIN comments ON reviews.review_id = comments.review_id 
      WHERE reviews.review_id = $1 
      GROUP BY reviews.review_id;`
     const { rows } = await db.query(queryStr1, [id])
@@ -48,6 +41,18 @@ exports.updateReview = async (id, vote) => {
                 status: '400',
                 msg: 'Bad request or invalid input'
             })
-        }
-       
-}
+        }    
+};
+
+exports.selectReviews = async () => {
+    const queryStr1 = `SELECT reviews.*,
+    COALESCE(COUNT(comments.review_id),0) AS comment_count FROM reviews 
+    LEFT JOIN comments ON reviews.review_id = comments.review_id 
+    GROUP BY reviews.review_id;`
+    const { rows } = await db.query(queryStr1)
+    return rows;
+    // return db.query(`SELECT * FROM reviews;`)
+    //     .then(({ rows }) => {
+    //         return rows;
+    //     });
+};

@@ -34,30 +34,6 @@ describe('app', () => {
         })
     })
 
-    describe('GET /api/reviews', () => {
-        test('status 200 returns all reviews correctly', () => {
-            return request(app)
-                .get('/api/reviews')
-                .expect(200)
-                .then(({ body }) => {
-                    expect(body.reviews).toHaveLength(13);
-                    body.reviews.forEach((review) => {
-                        expect(review).toMatchObject({
-                            title: expect.any(String),
-                            designer: expect.any(String),
-                            owner: expect.any(String),
-                            review_img_url: expect.any(String),
-                            review_body: expect.any(String),
-                            category: expect.any(String),
-                            created_at: expect.any(String),
-                            votes: expect.any(Number),
-                            review_id: expect.any(Number)
-                        })
-                    })
-                })
-        })
-    })
-
     describe('GET /api/reviews/:review_id', () => {
         test('status 200 returns get review by id correctly', () => {
             return request(app)
@@ -202,8 +178,33 @@ describe('app', () => {
                     expect(body.msg).toBe('Bad request or invalid input')
                 })
         })
-    })
+    }) 
     
+    describe('GET /api/reviews', () => {
+        test('status 200 returns all reviews correctly', () => {
+            return request(app)
+                .get('/api/reviews')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.reviews).toHaveLength(13);
+                    body.reviews.forEach((review) => {
+                        expect(review).toMatchObject({
+                            title: expect.any(String),
+                            designer: expect.any(String),
+                            owner: expect.any(String),
+                            review_img_url: expect.any(String),
+                            review_body: expect.any(String),
+                            category: expect.any(String),
+                            created_at: expect.any(String),
+                            votes: expect.any(Number),
+                            review_id: expect.any(Number),
+                            comment_count: expect.any(String)
+                        })
+                    })
+                })
+        })
+    }) 
+   
 
 })
     
