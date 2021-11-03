@@ -297,9 +297,40 @@ describe('app', () => {
                 expect(body.msg).toBe('Review not found');
               });
           });
-
     }) 
    
 
+    describe('GET /api/reviews/:review_id/comments', () => {
+        test('status 200 returns array of comments by review_id', () => {
+            return request(app)
+                .get('/api/reviews/2/comments')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.comments).toEqual([
+                        {
+                            "author": "bainesface", 
+                            "body": "I loved this game too!", 
+                            "comment_id": 1, 
+                            "created_at": "2017-11-22T12:43:33.389Z", 
+                            "votes": 16
+                        }, 
+                        {
+                            "author": "bainesface", 
+                            "body": "EPIC board game!", 
+                            "comment_id": 4, 
+                            "created_at": "2017-11-22T12:36:03.389Z", 
+                            "votes": 16
+                        }, 
+                        {
+                            "author": "mallionaire", 
+                            "body": "Now this is a story all about how, board games turned my life upside down", 
+                            "comment_id": 5, 
+                            "created_at": "2021-01-18T10:24:05.410Z", 
+                            "votes": 13
+                        }
+                    ])
+                })
+        })
+    })
 })
     
