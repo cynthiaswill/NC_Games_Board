@@ -280,12 +280,21 @@ describe('app', () => {
               });
           });
 
-          test("status 404 with queried item cannot be found in database", () => {
+          test("status 404 with queried category not exist in database", () => {
             return request(app)
               .get("/api/reviews?category=non-existence")
               .expect(404)
               .then(({ body }) => {
-                expect(body.msg).toBe('Item not found');
+                expect(body.msg).toBe('Category not found');
+              });
+          });
+
+          test("status 404 with queried category do exist but no review can be found associated with it", () => {
+            return request(app)
+              .get("/api/reviews?category=children's+games")
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Review not found');
               });
           });
 
