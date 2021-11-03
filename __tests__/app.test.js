@@ -360,7 +360,7 @@ describe('app', () => {
         })
     })
 
-    describe('POST /api/reviews/:review_id/comments', () => {
+    describe.only('POST /api/reviews/:review_id/comments', () => {
         test('status 201 return posted comment correctly', () => {
             return request(app)
                 .post('/api/reviews/1/comments')
@@ -387,6 +387,26 @@ describe('app', () => {
                 .expect(400)
                 .then(({ body }) => {
                     expect(body.msg).toBe('Username does not exist!')
+                })
+        })
+
+        test('status 404 review_id = 9999 does not exist in database', () => {
+            return request(app)
+                .get('/api/reviews/9999/comments')
+                .send({ "username": "mallionaire", "body": "test" })
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('This review_id does not exist!')
+                })
+        })
+
+        test('status 400 bad request invalid review_id', () => {
+            return request(app)
+                .get('/api/reviews/not_a_review_id/comments')
+                .send({ "username": "mallionaire", "body": "test" })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input')
                 })
         })
 
