@@ -28,14 +28,14 @@ exports.updateReview = async (id, vote) => {
     const review = await db.query(`UPDATE reviews SET votes = votes + $2 
         WHERE review_id = $1 RETURNING *`, [id, vote]);
         if (vote !== undefined) {
-             if (review.rows.length !== 0) {
-            return review.rows[0];
-        }   else {
-            return Promise.reject({ 
-                status: '404',
-                msg: 'This review does not exist!'
-            })
-        }
+            if (review.rows.length !== 0) {
+                return review.rows[0];
+            }       else {
+                return Promise.reject({ 
+                    status: '404',
+                    msg: 'This review does not exist!'
+                })
+            }
         }   else {
             return Promise.reject({ 
                 status: '400',
