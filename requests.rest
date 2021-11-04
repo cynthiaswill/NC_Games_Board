@@ -22,8 +22,8 @@
 # POST http://localhost:9000/api/reviews/2/comments
 #     Content-Type: application/json
 
-#     { "username": "mallionaire", "body": "test" }
+#     { "username": "tickle122", "body": "test" }
 
 # DELETE http://localhost:9000/api/comments/10
 
-GET http://localhost:9000/api
+# GET http://localhost:9000/api
