@@ -456,6 +456,12 @@ describe('app', () => {
             return request(app)
                 .delete('/api/comments/1')
                 .expect(204)
+                .then(()=> {
+                    return db.query('SELECT * FROM comments')
+                })
+                .then(({rows}) => {
+                    expect(rows.length).toBe(5)
+                })
         })
 
         test('status 404 requested comment_to_be_deleted cannot be found', () => {
@@ -500,6 +506,21 @@ describe('app', () => {
                             username: expect.any(String)
                         })
                     })
+                })
+        })
+    })
+
+    describe('GET /api/users/:username', () => {
+        test('status 200 display an user object', () => {
+            return request(app)
+                .get('/api/users/mallionaire')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.user).toEqual({
+                        username: 'mallionaire',
+                        avatar_url: 'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg',
+                        name: 'haz'
+                      })
                 })
         })
     })
