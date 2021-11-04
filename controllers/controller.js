@@ -7,7 +7,8 @@ const {
     insertComment,
     removeComment,
     readOverview,
-    selectUsers
+    selectUsers,
+    selectUser
 }   = require('../models/models.js');
 
 exports.getCategories = (req, res, next) => {
@@ -87,6 +88,14 @@ exports.getOverview = (req, res, next) => {
 exports.getUsers = (req, res, next) => {
     selectUsers().then( users => {
         res.send({ users })
+    })
+    .catch(next)
+}
+
+exports.getUser = (req, res, next) => {
+    const { username } = req.params;
+    selectUser(username).then(user => {
+        res.send({ user })
     })
     .catch(next)
 }

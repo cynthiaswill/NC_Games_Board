@@ -28,4 +28,6 @@
 
 # GET http://localhost:9000/api
 
-GET http://localhost:9000/api/users
+# GET http://localhost:9000/api/users
+
+GET http://localhost:9000/api/users/grumpy19
