@@ -141,7 +141,6 @@ exports.removeComment = async (id) => {
 
 exports.readOverview = async () => {
     const overview = await readFile('./endpoints.json', 'utf8')
-    console.log(JSON.parse(overview))
     if (overview) {
         return JSON.parse(overview);
     }   else {
@@ -149,6 +148,5 @@ exports.readOverview = async () => {
             status: '404',
             msg: 'Overview file not found.'
         });
-    }
-    
+    }   
 }
