@@ -13,7 +13,7 @@ app.use(express.json());
 
 app.use('/api', apiRouter);
 
-app.use('*', handleBadPaths);
+app.use('/*', handleBadPaths);
 app.use(handleCustomErrors);
 app.use(handlePSQLErrors);
 app.use(handle500);
