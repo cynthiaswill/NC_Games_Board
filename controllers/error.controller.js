@@ -1,4 +1,12 @@
 
+exports.handleBadPaths = (req, res) => {
+    res.status(404).send({ msg: 'Invalid path' })
+};
+
+exports.handleBadMethods = (req, res) => {
+    res.status(405).send({ msg: 'Method not allowed'})
+};
+
 exports.handleCustomErrors = (err, req, res, next) => {
     if (err.status === '404' || err.status === '400') {
         res.status(err.status).send({ msg: err.msg });
@@ -17,4 +25,4 @@ exports.handlePSQLErrors = (err, req, res, next) => {
 
 exports.handle500 = (err, req, res, next) => {
     res.status(500).send({ msg: 'Internal server error'})
-}
+};
