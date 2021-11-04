@@ -482,10 +482,27 @@ describe('app', () => {
             return request(app)
                 .get('/api')
                 .expect(200)
-                .then( body => {
+                .then(({ body }) => {
                     expect(typeof body).toBe('object');
                 })
         })
     })
+
+    describe('GET /api/users', () => {
+        test('status 200 display all usernames', () => {
+            return request(app)
+                .get('/api/users')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.users).toHaveLength(4);
+                    body.users.forEach( user => {
+                        expect(user).toMatchObject({
+                            username: expect.any(String)
+                        })
+                    })
+                })
+        })
+    })
+
 })
     
