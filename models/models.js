@@ -1,4 +1,5 @@
 const db = require('../db/connection');
+const { readFile } = require('fs/promises');
 
 exports.selectCategories = async () => {
     const { rows } = await db.query(`SELECT * FROM categories;`)
@@ -136,4 +137,18 @@ exports.removeComment = async (id) => {
             msg: 'This comment_id does not exist!'
         });
     }
+}
+
+exports.readOverview = async () => {
+    const overview = await readFile('./endpoints.json', 'utf8')
+    console.log(JSON.parse(overview))
+    if (overview) {
+        return JSON.parse(overview);
+    }   else {
+        return Promise.reject({
+            status: '404',
+            msg: 'Overview file not found.'
+        });
+    }
+    
 }

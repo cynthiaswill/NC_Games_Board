@@ -5,7 +5,8 @@ const {
     updateReview,
     selectComments,
     insertComment,
-    removeComment
+    removeComment,
+    readOverview
 }   = require('../models/models.js');
 
 exports.getCategories = (req, res, next) => {
@@ -71,6 +72,13 @@ exports.deleteComment = (req, res, next) => {
 
     removeComment(comment_id).then(() => {
         res.status(204).send();
+    })
+    .catch(next)
+}
+
+exports.getOverview = (req, res, next) => {
+    readOverview().then(overview => {
+        res.send({ overview })
     })
     .catch(next)
 }

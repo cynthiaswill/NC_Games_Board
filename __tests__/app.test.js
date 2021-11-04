@@ -3,7 +3,6 @@ const testData = require('../db/data/test-data/index.js');
 const  seed  = require('../db/seeds/seed.js');
 const request = require('supertest');
 const app = require('../app');
-const { deleteComment } = require('../controllers/controller.js');
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -476,7 +475,17 @@ describe('app', () => {
                     expect(body.msg).toBe('Bad request or invalid input')
                 })
         })
+    })
 
+    describe('GET /api', () => {
+        test('status 200 display an overview of all endpoints', () => {
+            return request(app)
+                .get('/api')
+                .expect(200)
+                .then( body => {
+                    expect(typeof body).toBe('object');
+                })
+        })
     })
 })
     

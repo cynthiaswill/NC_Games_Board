@@ -24,4 +24,6 @@
 
 #     { "username": "mallionaire", "body": "test" }
 
-# delete http://localhost:9000/api/comments/10
+# DELETE http://localhost:9000/api/comments/10
+
+GET http://localhost:9000/api
