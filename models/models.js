@@ -3,7 +3,7 @@ const { readFile } = require('fs/promises');
 
 exports.selectCategories = async () => {
     const { rows } = await db.query(`SELECT * FROM categories;`)
-        return rows;
+    return rows;
 };
 
 exports.selectReviewById = async (id) => {   
@@ -149,4 +149,10 @@ exports.readOverview = async () => {
             msg: 'Overview file not found.'
         });
     }   
+}
+
+exports.selectUsers = async () => {
+    const { rows } = await db
+        .query(`SELECT users.username FROM users;`)
+    return rows;
 }

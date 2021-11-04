@@ -4,4 +4,4 @@ const { handleBadMethods } = require('../controllers/error.controller');
 
 commentsRouter.route('/:comment_id').delete(deleteComment).all(handleBadMethods);
 
-module.exports = commentsRouter
+module.exports = commentsRouter;

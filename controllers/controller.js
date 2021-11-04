@@ -6,7 +6,8 @@ const {
     selectComments,
     insertComment,
     removeComment,
-    readOverview
+    readOverview,
+    selectUsers
 }   = require('../models/models.js');
 
 exports.getCategories = (req, res, next) => {
@@ -79,6 +80,13 @@ exports.deleteComment = (req, res, next) => {
 exports.getOverview = (req, res, next) => {
     readOverview().then(overview => {
         res.send({ overview })
+    })
+    .catch(next)
+}
+
+exports.getUsers = (req, res, next) => {
+    selectUsers().then( users => {
+        res.send({ users })
     })
     .catch(next)
 }
