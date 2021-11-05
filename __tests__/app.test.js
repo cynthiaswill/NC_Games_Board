@@ -180,7 +180,7 @@ describe('app', () => {
         })
     }) 
     
-    describe.only('GET /api/reviews', () => {
+    describe('GET /api/reviews', () => {
         test('status 200 returns all reviews correctly default to desc by date with correct total count', () => {
             return request(app)
                 .get('/api/reviews')
@@ -359,6 +359,15 @@ describe('app', () => {
           test("status 400 when given invalid value for page such as p = 'invalid'", () => {
             return request(app)
               .get("/api/reviews?limit=5&&p=invalid")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request or invalid input')
+              });
+          });
+
+          test("status 400 when given negative value for page such as -8", () => {
+            return request(app)
+              .get("/api/reviews?limit=10&&p=-8")
               .expect(400)
               .then(({ body }) => {
                 expect(body.msg).toBe('Bad request or invalid input')
