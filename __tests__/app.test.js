@@ -180,8 +180,8 @@ describe('app', () => {
         })
     }) 
     
-    describe('GET /api/reviews', () => {
-        test('status 200 returns all reviews correctly default to desc by date', () => {
+    describe.only('GET /api/reviews', () => {
+        test('status 200 returns all reviews correctly default to desc by date with correct total count', () => {
             return request(app)
                 .get('/api/reviews')
                 .expect(200)
@@ -298,6 +298,24 @@ describe('app', () => {
               .expect(404)
               .then(({ body }) => {
                 expect(body.msg).toBe('Review not found');
+              });
+          });
+
+          test("status 200 returns correct amount of reviews by query", () => {
+            return request(app)
+              .get("/api/reviews?limit=3")
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.reviews).toHaveLength(3);
+              });
+          });
+
+          test("status 200 returns correct amount of reviews on certain page by query", () => {
+            return request(app)
+              .get("/api/reviews?limit=3")
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.reviews).toHaveLength(3);
               });
           });
     }) 
