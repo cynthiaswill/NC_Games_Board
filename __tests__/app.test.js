@@ -523,6 +523,16 @@ describe('app', () => {
                       })
                 })
         })
+
+        test.only('status 404 username = "non-exist" does not exist in database', () => {
+            return request(app)
+                .get('/api/users/non_exist')
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Username not found!')
+                })
+        })
+
     })
 
 })

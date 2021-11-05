@@ -165,7 +165,7 @@ exports.selectUser = async (username) => {
         return rows[0];
     }   else {
         return Promise.reject({ 
-            status: 404, 
+            status: '404', 
             msg: 'Username not found!'
         })
     }
