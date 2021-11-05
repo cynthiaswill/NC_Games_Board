@@ -74,7 +74,8 @@ exports.selectReviews = async (sort = 'created_at', order = 'desc', category, li
           }
       }
 
-exports.selectComments = async (id) => {
+exports.selectComments = async (id, limit = 10, p = 1) => {
+    const offset = (p - 1) * limit;
     const queryStr = `SELECT 
         comments.comment_id, 
         comments.votes, 
@@ -83,8 +84,9 @@ exports.selectComments = async (id) => {
         comments.body 
         FROM comments 
         LEFT JOIN users ON comments.author = users.username 
-        WHERE comments.review_id = $1`
-    const { rows } = await db.query(queryStr, [id])
+        WHERE comments.review_id = $1
+        LIMIT $2 OFFSET $3`
+    const { rows } = await db.query(queryStr, [id, limit, offset])
     const reviewResult = await db.query(`SELECT * FROM reviews WHERE review_id = $1`, [id])
 
     if (rows.length !== 0) {
