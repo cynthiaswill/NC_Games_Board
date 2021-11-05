@@ -310,7 +310,7 @@ describe('app', () => {
               });
           });
 
-          test("status 200 returns correct amount of reviews on certain page by query", () => {
+          test("status 200 returns correct amount of reviews on per page by query", () => {
             return request(app)
               .get("/api/reviews?limit=3")
               .expect(200)
@@ -356,9 +356,9 @@ describe('app', () => {
               });
           });
 
-          test("status 400 when given invalid value for limit such as limit = 'invalid'", () => {
+          test("status 400 when given invalid value for page such as p = 'invalid'", () => {
             return request(app)
-              .get("/api/reviews?limit=invalid")
+              .get("/api/reviews?limit=5&&p=invalid")
               .expect(400)
               .then(({ body }) => {
                 expect(body.msg).toBe('Bad request or invalid input')
