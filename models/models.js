@@ -181,7 +181,7 @@ exports.updateComment = async (id, votes) => {
         }   else {
             return Promise.reject({ 
                 status: '404', 
-                msg: 'this comment_id does not exist!'
+                msg: 'This comment_id does not exist!'
             })
         }
     }   else {
