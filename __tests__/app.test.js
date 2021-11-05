@@ -318,6 +318,26 @@ describe('app', () => {
                 expect(body.reviews).toHaveLength(3);
               });
           });
+
+          test("status 200 returns correct amount of reviews on certain page by query", () => {
+            return request(app)
+              .get("/api/reviews?limit=4&&p=4")
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.reviews).toHaveLength(1);
+              });
+          });
+
+          test("status 200 returns correct amount of reviews on certain page with category set sort by title and in ascending order by query", () => {
+            return request(app)
+              .get("/api/reviews?limit=4&&p=3&&category=social%20deduction&&sort_by=title&&order=asc")
+              .expect(200)
+              .then(({ body }) => {
+                expect(body.reviews).toHaveLength(3);
+                expect(body.reviews).toBeSortedBy('title')
+              });
+          });
+
     }) 
    
     describe('GET /api/reviews/:review_id/comments', () => {
