@@ -524,7 +524,7 @@ describe('app', () => {
                 })
         })
 
-        test.only('status 404 username = "non-exist" does not exist in database', () => {
+        test('status 404 username = "non-exist" does not exist in database', () => {
             return request(app)
                 .get('/api/users/non_exist')
                 .expect(404)
@@ -532,6 +532,26 @@ describe('app', () => {
                     expect(body.msg).toBe('Username not found!')
                 })
         })
+    })
+
+    describe('PATCH /api/comments/:comment_id', () => {
+        test('status 200 display an updated comment with new votes', () => {
+            return request(app)
+                .patch('/api/comments/2')
+                .send({ inc_votes : 1 })
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.comment).toEqual({
+                        comment_id: 2,
+                        author: 'mallionaire',
+                        review_id: 3,
+                        votes: 14,
+                        created_at: '2021-01-18T10:09:05.410Z',
+                        body: 'My dog loved this game too!'
+                      })
+                })
+        })
+
 
     })
 

@@ -8,7 +8,8 @@ const {
     removeComment,
     readOverview,
     selectUsers,
-    selectUser
+    selectUser,
+    updateComment
 }   = require('../models/models.js');
 
 exports.getCategories = (req, res, next) => {
@@ -96,6 +97,15 @@ exports.getUser = (req, res, next) => {
     const { username } = req.params;
     selectUser(username).then(user => {
         res.send({ user })
+    })
+    .catch(next)
+}
+
+exports.patchComment = (req, res, next) => {
+    const { comment_id } = req.params;
+    const { inc_votes } = req.body;
+    updateComment(comment_id, inc_votes).then(comment => {
+        res.send({ comment })
     })
     .catch(next)
 }

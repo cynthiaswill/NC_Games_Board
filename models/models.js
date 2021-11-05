@@ -170,3 +170,17 @@ exports.selectUser = async (username) => {
         })
     }
 }
+
+exports.updateComment = async (id, votes) => {
+    const { rows } = await db
+        .query(`UPDATE comments SET votes = votes + $2 
+            WHERE comment_id = $1 RETURNING *`, [id, votes])
+    if (rows.length !== 0) {
+        return rows[0];
+    }   else {
+        return Promise.reject({ 
+            status: '404', 
+            msg: 'this comment_id does not exist!'
+        })
+    }
+}

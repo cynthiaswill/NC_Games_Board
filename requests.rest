@@ -30,4 +30,9 @@
 
 # GET http://localhost:9000/api/users
 
-GET http://localhost:9000/api/users/grumpy19
+# GET http://localhost:9000/api/users/grumpy19
+
+# PATCH http://localhost:9000/api/comments/2
+#     Content-Type: application/json
+
+#     { "inc_votes": 1 }
