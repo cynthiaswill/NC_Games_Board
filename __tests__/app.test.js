@@ -552,7 +552,15 @@ describe('app', () => {
                 })
         })
 
-
+        test(`status 400 no inc_votes key on request body in patch request`, () => {
+            return request(app)
+                .patch(`/api/comments/2`)
+                .send({ })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input');
+                }) 
+        })
     })
 
 })
