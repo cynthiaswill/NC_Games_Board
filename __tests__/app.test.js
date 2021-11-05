@@ -561,7 +561,55 @@ describe('app', () => {
                     expect(body.msg).toBe('Bad request or invalid input');
                 }) 
         })
+
+        test(`status 400 invalid inc_votes value on request body in patch request`, () => {
+            return request(app)
+                .patch(`/api/comments/2`)
+                .send({ inc_votes: 'not-valid' })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input');
+                }) 
+        })
+    
+        test(`status 200 with some extra other property(which will be ignored) appear on request body in patch request`, () => {
+            return request(app)
+                .patch(`/api/comments/2`)
+                .send({ inc_votes : 1, name: 'Mitch' })
+                .expect(200)
+                .then( ({ body }) => {
+                    expect(body.comment).toEqual({
+                        comment_id: 2,
+                        author: 'mallionaire',
+                        review_id: 3,
+                        votes: 14,
+                        created_at: '2021-01-18T10:09:05.410Z',
+                        body: 'My dog loved this game too!'
+                      })
+                })
+        })
+
+        test('status 404 comment_id = 9999 does not exist in database', () => {
+            return request(app)
+                .patch('/api/comments/9999')
+                .send({ "inc_votes": 1 })
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('This comment_id does not exist!')
+                })
+        })
+
+        test('status 400 bad request invalid comment_id', () => {
+            return request(app)
+                .patch('/api/reviews/not_a_comment_id')
+                .send({ "inc_votes": 1 })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input')
+                })
+        })
     })
+
 
 })
     
