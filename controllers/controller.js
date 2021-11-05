@@ -37,12 +37,12 @@ exports.patchReview = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-    const { sort_by, order, category } = req.query;
-    const validQueries = ['sort_by', 'order', 'category'];
+    const { sort_by, order, category, limit, p } = req.query;
+    const validQueries = ['sort_by', 'order', 'category', 'limit', 'p'];
     const queryKeys = Object.keys(req.query);
    
     if (queryKeys.every( key => validQueries.includes(key))) {
-      selectReviews(sort_by, order, category).then(reviews => {
+      selectReviews(sort_by, order, category, limit, p).then(reviews => {
       res.send({ reviews });
     })
     .catch(next);
