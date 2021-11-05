@@ -45,7 +45,7 @@ exports.updateReview = async (id, vote) => {
 
 exports.selectReviews = async (sort = 'created_at', order = 'desc', category, limit = 10, p = 1) => {
     const offset = (p - 1) * limit;
-    const queryValues = [limit, offset, sort];
+    const queryValues = [limit, offset];
     let queryStr = `SELECT reviews.*,
     COUNT(comments.review_id)::INT AS comment_count, 
     COUNT(*) OVER()::INT AS total_count 
@@ -53,12 +53,12 @@ exports.selectReviews = async (sort = 'created_at', order = 'desc', category, li
     LEFT JOIN comments ON reviews.review_id = comments.review_id `
     if (category) {
         queryValues.push(category);
-        queryStr += ` WHERE category = $4`;
+        queryStr += ` WHERE category = $3`;
       }
         queryStr += ` GROUP BY reviews.review_id`
-        queryStr += ` ORDER BY $3 ${order}`
+        queryStr += ` ORDER BY ${sort} ${order}`
         queryStr += ` LIMIT $1 OFFSET $2`
-        
+
       const { rows } = await db.query(queryStr, queryValues)
 
           if (rows.length === 0 && category !== undefined) {
