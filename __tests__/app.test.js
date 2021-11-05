@@ -297,7 +297,7 @@ describe('app', () => {
               .get("/api/reviews?category=children's+games")
               .expect(404)
               .then(({ body }) => {
-                expect(body.msg).toBe('Review not found');
+                expect(body.msg).toBe('Review not found or empty page');
               });
           });
 
@@ -335,6 +335,42 @@ describe('app', () => {
               .then(({ body }) => {
                 expect(body.reviews).toHaveLength(3);
                 expect(body.reviews).toBeSortedBy('title')
+              });
+          });
+
+          test("status 400 when given negative value for limit such as -10", () => {
+            return request(app)
+              .get("/api/reviews?limit=-10")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request or invalid input')
+              });
+          });
+
+          test("status 400 when given invalid value for limit such as limit = 'invalid'", () => {
+            return request(app)
+              .get("/api/reviews?limit=invalid")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request or invalid input')
+              });
+          });
+
+          test("status 400 when given invalid value for limit such as limit = 'invalid'", () => {
+            return request(app)
+              .get("/api/reviews?limit=invalid")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request or invalid input')
+              });
+          });
+
+          test("status 404 when given out of range page number ", () => {
+            return request(app)
+              .get("/api/reviews?limit=8&&p=99")
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Review not found or empty page')
               });
           });
 

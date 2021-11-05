@@ -36,3 +36,5 @@
 #     Content-Type: application/json
 
 #     { "inc_votes": 1 }
+
+# GET http://localhost:9000/api/reviews?limit=8&&p=99

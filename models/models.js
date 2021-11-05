@@ -61,13 +61,13 @@ exports.selectReviews = async (sort = 'created_at', order = 'desc', category, li
 
       const { rows } = await db.query(queryStr, queryValues)
 
-          if (rows.length === 0 && category !== undefined) {
+          if (rows.length === 0) {
               const categoryResult = await db
               .query(`SELECT * FROM categories WHERE slug = $1`, [category])
-              if (categoryResult.rows.length === 0) {
+              if (category && categoryResult.rows.length === 0) {
                 return Promise.reject({ status: '404', msg: 'Category not found'})
               } else {
-                  return Promise.reject({ status: '404', msg: 'Review not found'})
+                  return Promise.reject({ status: '404', msg: 'Review not found or empty page'})
               } 
           } else {
              return rows;
