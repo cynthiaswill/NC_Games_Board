@@ -46,7 +46,9 @@ exports.updateReview = async (id, vote) => {
 exports.selectReviews = async (sort = 'created_at', order = 'desc', category) => {
     let queryValues = [];
     let queryStr = `SELECT reviews.*,
-    COUNT(comments.review_id)::INT AS comment_count FROM reviews 
+    COUNT(comments.review_id)::INT AS comment_count, 
+    COUNT(*) OVER()::INT AS total_count 
+    FROM reviews 
     LEFT JOIN comments ON reviews.review_id = comments.review_id `
     if (category) {
         queryStr += ` WHERE category = $1`;
