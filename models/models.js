@@ -43,7 +43,11 @@ exports.updateReview = async (id, vote) => {
         }    
 };
 
-exports.selectReviews = async (sort = 'created_at', order = 'desc', category, limit = 10, p = 1) => {
+exports.selectReviews = async (sort = 'created_at', order = 'desc', category, limit = 10, p = 1, queryKeys) => {
+    const validQueries = ['sort_by', 'order', 'category', 'limit', 'p'];
+    if (!queryKeys.every( key => validQueries.includes(key))) {
+        return Promise.reject({status:'400', msg: 'Invalid: not a query'})
+    };
     const offset = (p - 1) * limit;
     const queryValues = [limit, offset];
     let queryStr = `SELECT reviews.*,

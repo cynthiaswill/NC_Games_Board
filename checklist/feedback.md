@@ -88,7 +88,7 @@
   - [✔️] Status 400, invalid ID, e.g. string of "not-an-id"
   - [✔️] Status 404, non existent ID, e.g. 0 or 9999
   - [✔️] Status 400, missing required field(s), e.g. no username or body properties
-  - [ ] Status 404, username does not exist
+  - [√] Status 404, username does not exist
     - `You have a bad request but you could also handle this a not found error!`
   - [✔️] Status 201, ignores unnecessary properties
 
@@ -117,7 +117,7 @@
 ## Errors
 
 - [✔️] Use error handling middleware functions in app and extracted to separate directory/file
-- [ ] Consistently use `Promise.reject` in either models _**OR**_ controllers
+- [√] Consistently use `Promise.reject` in either models _**OR**_ controllers
   - `for your validation of query keys, I would move that to the model then you can reject the promise there and only have one catch block.`
 
 ## Extra Tasks - To be completed after hosting
