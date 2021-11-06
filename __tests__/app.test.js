@@ -552,7 +552,7 @@ describe('app', () => {
                         body: 'test',
                         votes: 0,
                         author: 'mallionaire',
-                        review_id: expect.any(Number),
+                        review_id: 1,
                         created_at: expect.any(String)
                     })
                 })
@@ -614,14 +614,11 @@ describe('app', () => {
                 .send({ "username": "mallionaire", "body": "test", "something_else": "ignored" })
                 .expect(201)
                 .then(({ body }) => {
-                    expect(body.comment.body).toBe('test')
-                    expect(body.comment.votes).toBe(0)
-                    expect(body.comment.author).toBe('mallionaire')
                     expect(body.comment).toMatchObject({
-                        body: expect.any(String),
-                        votes: expect.any(Number),
-                        author: expect.any(String),
-                        review_id: expect.any(Number),
+                        body: 'test',
+                        votes: 0,
+                        author: 'mallionaire',
+                        review_id: 1,
                         created_at: expect.any(String)
                     })
                 })
