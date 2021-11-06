@@ -549,13 +549,13 @@ describe('app', () => {
                 })
         })
 
-        test('status 400 failed to post due to username does not exist', () => {
+        test('status 404 failed to post due to username does not exist', () => {
             return request(app)
                 .post('/api/reviews/1/comments')
                 .send({ "username": "tester", "body": "test" })
-                .expect(400)
+                .expect(404)
                 .then(({ body }) => {
-                    expect(body.msg).toBe('Username does not exist!')
+                    expect(body.msg).toBe('Username not found!')
                 })
         })
 

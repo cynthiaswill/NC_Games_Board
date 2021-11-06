@@ -79,7 +79,7 @@
   - [✔️] Status 200, array of comment objects for the specified review
   - [✔️] Status 400, invalid ID, e.g. string of "not-an-id"
   - [✔️] Status 404, non existent ID, e.g. 0 or 9999
-  - [ ] Status 200, valid ID, but has no comments responds with an empty array of comments
+  - [√] Status 200, valid ID, but has no comments responds with an empty array of comments
     - `you have chosen to display a message, which is also fine!`
 
 - `POST /api/reviews/:review_id/comments`

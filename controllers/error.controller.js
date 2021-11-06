@@ -19,7 +19,7 @@ exports.handlePSQLErrors = (err, req, res, next) => {
     }   else if (err.code === '42703') {
         res.status(400).send({ msg: 'No such column in database or invalid order type'})
     }   else if (err.code === '23503') {
-        res.status(400).send({ msg: 'Username does not exist!'})
+        res.status(404).send({ msg: 'Username not found!'})
     }   else next(err);
 };
 
