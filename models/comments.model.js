@@ -63,6 +63,7 @@ exports.removeComment = async (id) => {
         });
     }
 }
+
 exports.updateComment = async (id, votes) => {
     const { rows } = await db
         .query(`UPDATE comments SET votes = votes + $2 
