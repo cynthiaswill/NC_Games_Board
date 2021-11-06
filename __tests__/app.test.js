@@ -283,7 +283,7 @@ describe('app', () => {
               });
           });
 
-          test("status 200 with queried category not exist in database", () => {
+          test("status 404 with queried category not exist in database", () => {
             return request(app)
               .get("/api/reviews?category=non-existence")
               .expect(404)
@@ -292,12 +292,12 @@ describe('app', () => {
               });
           });
 
-          test("status 200 with queried category do exist but no review can be found associated with it, returns empty array", () => {
+          test("status 404 with queried category do exist but no review can be found associated with it", () => {
             return request(app)
               .get("/api/reviews?category=children's+games")
-              .expect(200)
+              .expect(404)
               .then(({ body }) => {
-                expect(body.reviews).toEqual([]);
+                expect(body.msg).toBe('Review not found or empty page');
               });
           });
 
@@ -374,12 +374,12 @@ describe('app', () => {
               });
           });
 
-          test("status 200 when given out of range page number, returns empty array ", () => {
+          test("status 404 when given out of range page number ", () => {
             return request(app)
               .get("/api/reviews?limit=8&&p=99")
-              .expect(200)
+              .expect(404)
               .then(({ body }) => {
-                expect(body.reviews).toEqual([]);
+                expect(body.msg).toBe('Review not found or empty page')
               });
           });
 
