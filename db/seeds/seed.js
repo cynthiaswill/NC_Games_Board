@@ -29,7 +29,7 @@ const seed = async (data) => {
     ON DELETE SET NULL,
     owner VARCHAR REFERENCES users(username)
     ON DELETE SET NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT NOW()
   );`)
   await db.query(`CREATE TABLE comments (
     comment_id SERIAL PRIMARY KEY,
@@ -38,7 +38,7 @@ const seed = async (data) => {
     review_id INT REFERENCES reviews(review_id)
     ON DELETE CASCADE,
     votes INT DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW(),
     body TEXT NOT NULL
   )`)
     // 2. insert data
