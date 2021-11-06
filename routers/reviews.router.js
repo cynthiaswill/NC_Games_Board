@@ -4,9 +4,11 @@ const {
     getReviews, 
     getReviewById, 
     patchReview, 
+} = require('../controllers/reviews.controller');
+const {  
     getComments, 
     postComment 
-} = require('../controllers/controller');
+} = require('../controllers/comments.controller');
 
 reviewsRouter
     .route('/')

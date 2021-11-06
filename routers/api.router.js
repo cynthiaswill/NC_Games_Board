@@ -3,7 +3,7 @@ const categoriesRouter = require('./categories.router');
 const reviewsRouter = require('./reviews.router');
 const commentsRouter = require('./comments.router');
 const usersRouter = require('./users.router');
-const { getOverview } = require('../controllers/controller');
+const { getOverview } = require('../controllers/api.controller');
 const { handleBadMethods } = require('../controllers/error.controller');
 
 apiRouter.use('/categories', categoriesRouter);

@@ -132,7 +132,7 @@
 
 - `GET /api/users`
 
-- [ ] Status 200, responds with array of user objects
+- [√] Status 200, responds with array of user objects
 
 - `GET /api/users/:username`
 

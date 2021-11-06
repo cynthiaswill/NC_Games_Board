@@ -1,5 +1,5 @@
 const commentsRouter = require('express').Router();
-const { deleteComment, patchComment } = require('../controllers/controller');
+const { deleteComment, patchComment } = require('../controllers/comments.controller');
 const { handleBadMethods } = require('../controllers/error.controller');
 
 commentsRouter
