@@ -99,7 +99,7 @@ exports.selectComments = async (id, limit = 10, p = 1) => {
     }   else    {
         return Promise.reject({
             status: '404',
-            msg: 'No comment found'
+            msg: 'No comment found or empty page'
         });
     }
 }

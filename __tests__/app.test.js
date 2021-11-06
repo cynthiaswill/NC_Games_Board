@@ -386,7 +386,7 @@ describe('app', () => {
     }) 
    
     describe('GET /api/reviews/:review_id/comments', () => {
-        test('status 200 returns array of comments by review_id', () => {
+        test('status 200 returns array of comments by review_id with default limit', () => {
             return request(app)
                 .get('/api/reviews/2/comments')
                 .expect(200)
@@ -440,9 +440,96 @@ describe('app', () => {
                 .get('/api/reviews/1/comments')
                 .expect(404)
                 .then(({ body }) => {
-                    expect(body.msg).toBe('No comment found')
+                    expect(body.msg).toBe('No comment found or empty page')
                 })
         })
+
+        test('status 200 returns array of comments by review_id with limit of two reviews per page', () => {
+            return request(app)
+                .get('/api/reviews/2/comments?limit=2')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.comments).toEqual([
+                        {
+                            "author": "bainesface", 
+                            "body": "I loved this game too!", 
+                            "comment_id": 1, 
+                            "created_at": "2017-11-22T12:43:33.389Z", 
+                            "votes": 16
+                        }, 
+                        {
+                            "author": "bainesface", 
+                            "body": "EPIC board game!", 
+                            "comment_id": 4, 
+                            "created_at": "2017-11-22T12:36:03.389Z", 
+                            "votes": 16
+                        }, 
+                    ])
+                })
+        })
+
+        test('status 200 returns comments by review_id with limit of one review per page on page 2', () => {
+            return request(app)
+                .get('/api/reviews/2/comments?limit=1&&p=2')
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.comments).toEqual([
+                        {
+                            "author": "bainesface", 
+                            "body": "EPIC board game!", 
+                            "comment_id": 4, 
+                            "created_at": "2017-11-22T12:36:03.389Z", 
+                            "votes": 16
+                        }, 
+                    ])
+                })
+        })
+
+        test("status 400 when given negative value for limit such as -10", () => {
+            return request(app)
+              .get("/api/reviews/2/comments?limit=-10")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request or invalid input')
+              });
+          });
+
+          test("status 400 when given invalid value that is not a number", () => {
+            return request(app)
+              .get("/api/reviews/2/comments?limit=invalid")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request or invalid input');
+              });
+          });
+
+          test("status 400 when given invalid value for page such as p = 'invalid'", () => {
+            return request(app)
+              .get("/api/reviews/2/comments?limit=5&&p=invalid")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request or invalid input')
+              });
+          });
+
+          test("status 400 when given negative value for page such as -8", () => {
+            return request(app)
+              .get("/api/reviews/2/comments?limit=10&&p=-8")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body.msg).toBe('Bad request or invalid input')
+              });
+          });
+
+          test("status 404 when given out of range page number ", () => {
+            return request(app)
+              .get("/api/reviews/2/comments?limit=8&&p=99")
+              .expect(404)
+              .then(({ body }) => {
+                expect(body.msg).toBe('No comment found or empty page')
+              });
+          });
+
     })
 
     describe('POST /api/reviews/:review_id/comments', () => {
