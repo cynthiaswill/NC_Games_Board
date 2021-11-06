@@ -8,7 +8,7 @@ exports.handleBadMethods = (req, res) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
-    if (err.status == '404' || err.status == '400') {
+    if (err.status) {
         res.status(err.status).send({ msg: err.msg });
     }   else next(err);
 };
@@ -19,7 +19,7 @@ exports.handlePSQLErrors = (err, req, res, next) => {
     }   else if (err.code === '42703') {
         res.status(400).send({ msg: 'No such column in database or invalid order type'})
     }   else if (err.code === '23503') {
-        res.status(404).send({ msg: 'Username not found!'})
+        res.status(422).send({ msg: 'Unprocessable: username or review_id not found!'})
     }   else next(err);
 };
 

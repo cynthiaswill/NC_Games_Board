@@ -558,29 +558,29 @@ describe('app', () => {
                 })
         })
 
-        test('status 404 failed to post due to username does not exist', () => {
+        test('status 422 failed to post due to username does not exist', () => {
             return request(app)
                 .post('/api/reviews/1/comments')
                 .send({ "username": "tester", "body": "test" })
-                .expect(404)
+                .expect(422)
                 .then(({ body }) => {
-                    expect(body.msg).toBe('Username not found!')
+                    expect(body.msg).toBe('Unprocessable: username or review_id not found!')
                 })
         })
 
-        test('status 404 review_id = 9999 does not exist in database', () => {
+        test('status 422 when posting comment to a review, review_id = 9999 does not exist in database', () => {
             return request(app)
-                .get('/api/reviews/9999/comments')
+                .post('/api/reviews/9999/comments')
                 .send({ "username": "mallionaire", "body": "test" })
-                .expect(404)
+                .expect(422)
                 .then(({ body }) => {
-                    expect(body.msg).toBe('This review_id does not exist!')
+                    expect(body.msg).toBe('Unprocessable: username or review_id not found!')
                 })
         })
 
         test('status 400 bad request invalid review_id', () => {
             return request(app)
-                .get('/api/reviews/not_a_review_id/comments')
+                .post('/api/reviews/not_a_review_id/comments')
                 .send({ "username": "mallionaire", "body": "test" })
                 .expect(400)
                 .then(({ body }) => {

@@ -136,14 +136,7 @@ exports.insertComment = async (id, name, body) => {
         });
     }   else {
         const { rows }= await db.query(queryStr, [body, name, id]);
-    if (rows.length !== 0) {
         return rows[0];
-    }      else {
-        return Promise.reject({
-            status: '404',
-            msg: 'This review_id does not exist!'
-        });
-    }
     }
 }
 
