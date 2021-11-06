@@ -56,9 +56,15 @@ exports.selectReviews = async (sort = 'created_at', order = 'desc', category, li
         queryStr += ` WHERE category = $3`;
       }
         queryStr += ` GROUP BY reviews.review_id`
-        queryStr += ` ORDER BY ${sort} ${order}`
-        queryStr += ` LIMIT $1 OFFSET $2`
 
+        if (['title', 'designer', 'owner', 'category', 'created_at', 'votes'].includes(sort) && 
+            ['ASC', 'asc', 'desc', 'DESC'].includes(order)) {
+            queryStr += ` ORDER BY ${sort} ${order}`
+        }   else {
+            return Promise.reject({ status: '400', msg: 'No such column in database or invalid order type'})
+        }
+        queryStr += ` LIMIT $1 OFFSET $2`
+      
       const { rows } = await db.query(queryStr, queryValues)
 
           if (rows.length === 0) {

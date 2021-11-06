@@ -261,7 +261,7 @@ describe('app', () => {
               .get("/api/reviews?sort_by=not_a_column_name")
               .expect(400)
               .then(({ body }) => {
-                expect(body.msg).toBe('Bad request: no such column!');
+                expect(body.msg).toBe('No such column in database or invalid order type');
               });
           });
 
@@ -270,7 +270,7 @@ describe('app', () => {
               .get("/api/reviews?sort_by=title&&order=not_an_order")
               .expect(400)
               .then(({ body }) => {
-                expect(body.msg).toBe('Bad request or invalid input');
+                expect(body.msg).toBe('No such column in database or invalid order type');
               });
           });
 
