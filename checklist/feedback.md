@@ -142,10 +142,10 @@
 
 - `PATCH /api/comments/:comment_id`
 
-  - [ ] Status 200, updated single comment object
-  - [ ] Status 400, invalid ID, e.g. string of "not-an-id"
-  - [ ] Status 404, non existent ID, e.g. 0 or 9999
-  - [ ] Status 400, missing / incorrect body, e.g. `inc_votes` property is not a number, or missing
+  - [√] Status 200, updated single comment object
+  - [√] Status 400, invalid ID, e.g. string of "not-an-id"
+  - [√] Status 404, non existent ID, e.g. 0 or 9999
+  - [√] Status 400, missing / incorrect body, e.g. `inc_votes` property is not a number, or missing
 
 ## Extra Advanced Tasks
 
