@@ -237,7 +237,7 @@ describe('app', () => {
                 .expect(200)
                 .then(({ body }) => {
                     expect(body.reviews).toHaveLength(10);
-                    expect(body.reviews).toBeSortedBy('title')
+                    expect(body.reviews).toBeSortedBy('title');
                     body.reviews.forEach((review) => {
                         expect(review).toMatchObject({
                             title: expect.any(String),
@@ -245,7 +245,7 @@ describe('app', () => {
                             owner: expect.any(String),
                             review_img_url: expect.any(String),
                             review_body: expect.any(String),
-                            category: expect.any(String),
+                            category: 'social deduction',
                             created_at: expect.any(String),
                             votes: expect.any(Number),
                             review_id: expect.any(Number),
@@ -283,7 +283,7 @@ describe('app', () => {
               });
           });
 
-          test("status 404 with queried category not exist in database", () => {
+          test("status 200 with queried category not exist in database", () => {
             return request(app)
               .get("/api/reviews?category=non-existence")
               .expect(404)
@@ -292,12 +292,12 @@ describe('app', () => {
               });
           });
 
-          test("status 404 with queried category do exist but no review can be found associated with it", () => {
+          test("status 200 with queried category do exist but no review can be found associated with it, returns empty array", () => {
             return request(app)
               .get("/api/reviews?category=children's+games")
-              .expect(404)
+              .expect(200)
               .then(({ body }) => {
-                expect(body.msg).toBe('Review not found or empty page');
+                expect(body.reviews).toEqual([]);
               });
           });
 
@@ -374,12 +374,12 @@ describe('app', () => {
               });
           });
 
-          test("status 404 when given out of range page number ", () => {
+          test("status 200 when given out of range page number, returns empty array ", () => {
             return request(app)
               .get("/api/reviews?limit=8&&p=99")
-              .expect(404)
+              .expect(200)
               .then(({ body }) => {
-                expect(body.msg).toBe('Review not found or empty page')
+                expect(body.reviews).toEqual([]);
               });
           });
 

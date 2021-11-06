@@ -26,7 +26,7 @@
 
 ## Creating tables
 
-- [ ] Use `NOT NULL` on required fields
+- [√] Use `NOT NULL` on required fields
   - `I would probably be a little bit more strict and add NOT NULL to more of the fields`
 - [✔️] Default `created_at` in reviews and comments tables to the current date:`TIMESTAMP DEFAULT NOW()`
 - [✔️] Delete all comments when the review they are related to is deleted: Add `ON DELETE CASCADE` to `review_id` column in `comments` table.
@@ -66,12 +66,12 @@
   - [✔️] Status 200, default sort & order: `created_at`, `desc`
   - [✔️] Status 200, accepts `sort_by` query, e.g. `?sort_by=votes`
   - [✔️] Status 200, accepts `order` query, e.g. `?order=desc`
-  - [✔️] Status 200, accepts `category` query, e.g. `?category=dexterity`
+  - [√] Status 200, accepts `category` query, e.g. `?category=dexterity`
     - `You could add an extra assertion inside this test that the category for all the reviews is whatever is passed through the query. Remember this is to filter the reviews by category and not sort!`
   - [✔️] Status 400. invalid `sort_by` query, e.g. `?sort_by=bananas`
   - [✔️] Status 400. invalid `order` query, e.g. `?order=bananas`
   - [✔️] Status 404. non-existent `category` query, e.g. `?category=bananas`
-  - [ ] Status 200. valid `category` query, but has no reviews responds with an empty array of reviews, e.g. `?category=children's games`
+  - [√] Status 200. valid `category` query, but has no reviews responds with an empty array of reviews, e.g. `?category=children's games`
     - `You have handled this with a 404. Because the category isn't one found in the database, we could argue that we cannot filter by it and a such, should just ignore the query and send all of the reviews back anyway!`
 
 - `GET /api/reviews/:review_id/comments`

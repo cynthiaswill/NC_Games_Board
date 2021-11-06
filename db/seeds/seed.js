@@ -10,7 +10,7 @@ const seed = async (data) => {
    // 1. create tables
   await db.query(`CREATE TABLE categories (
     slug VARCHAR PRIMARY KEY,
-    description TEXT
+    description TEXT NOT NULL
   );`)
   await db.query(`CREATE TABLE users (
     username VARCHAR PRIMARY KEY UNIQUE,
@@ -21,7 +21,7 @@ const seed = async (data) => {
     review_id SERIAL PRIMARY KEY,
     title VARCHAR NOT NULL,
     review_body TEXT NOT NULL,
-    designer VARCHAR,
+    designer VARCHAR NOT NULL,
     review_img_url TEXT 
     DEFAULT 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg',
     votes INT DEFAULT 0,
