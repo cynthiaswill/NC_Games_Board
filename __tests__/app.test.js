@@ -274,7 +274,7 @@ describe('app', () => {
               });
           });
 
-          test("status 400 with invalid query type, query is not_a_query", () => {
+        test("status 400 with invalid query type, query is not_a_query", () => {
             return request(app)
               .get("/api/reviews?not_a_query=nothing")
               .expect(400)
@@ -283,7 +283,7 @@ describe('app', () => {
               });
           });
 
-          test("status 404 with queried category not exist in database", () => {
+        test("status 404 with queried category not exist in database", () => {
             return request(app)
               .get("/api/reviews?category=non-existence")
               .expect(404)
@@ -292,7 +292,7 @@ describe('app', () => {
               });
           });
 
-          test("status 404 with queried category do exist but no review can be found associated with it", () => {
+        test("status 404 with queried category do exist but no review can be found associated with it", () => {
             return request(app)
               .get("/api/reviews?category=children's+games")
               .expect(404)
@@ -301,7 +301,7 @@ describe('app', () => {
               });
           });
 
-          test("status 200 returns correct amount of reviews by query", () => {
+        test("status 200 returns correct amount of reviews by query", () => {
             return request(app)
               .get("/api/reviews?limit=3")
               .expect(200)
@@ -310,25 +310,25 @@ describe('app', () => {
               });
           });
 
-          test("status 200 returns correct amount of reviews on per page by query", () => {
+        test("status 200 returns correct amount of reviews on per page by query", () => {
             return request(app)
               .get("/api/reviews?limit=3")
               .expect(200)
               .then(({ body }) => {
                 expect(body.reviews).toHaveLength(3);
               });
-          });
+        });
 
-          test("status 200 returns correct amount of reviews on certain page by query", () => {
+        test("status 200 returns correct amount of reviews on certain page by query", () => {
             return request(app)
               .get("/api/reviews?limit=4&&p=4")
               .expect(200)
               .then(({ body }) => {
                 expect(body.reviews).toHaveLength(1);
               });
-          });
+        });
 
-          test("status 200 returns correct amount of reviews on certain page with category set sort by title and in ascending order by query", () => {
+        test("status 200 returns correct amount of reviews on certain page with category set sort by title and in ascending order by query", () => {
             return request(app)
               .get("/api/reviews?limit=4&&p=3&&category=social%20deduction&&sort_by=title&&order=asc")
               .expect(200)
@@ -336,16 +336,16 @@ describe('app', () => {
                 expect(body.reviews).toHaveLength(3);
                 expect(body.reviews).toBeSortedBy('title')
               });
-          });
+        });
 
-          test("status 400 when given negative value for limit such as -10", () => {
+        test("status 400 when given negative value for limit such as -10", () => {
             return request(app)
               .get("/api/reviews?limit=-10")
               .expect(400)
               .then(({ body }) => {
                 expect(body.msg).toBe('Bad request or invalid input')
               });
-          });
+        });
 
           test("status 400 when given invalid value for limit such as limit = 'invalid'", () => {
             return request(app)
@@ -356,32 +356,32 @@ describe('app', () => {
               });
           });
 
-          test("status 400 when given invalid value for page such as p = 'invalid'", () => {
+        test("status 400 when given invalid value for page such as p = 'invalid'", () => {
             return request(app)
               .get("/api/reviews?limit=5&&p=invalid")
               .expect(400)
               .then(({ body }) => {
                 expect(body.msg).toBe('Bad request or invalid input')
               });
-          });
+        });
 
-          test("status 400 when given negative value for page such as -8", () => {
+        test("status 400 when given negative value for page such as -8", () => {
             return request(app)
               .get("/api/reviews?limit=10&&p=-8")
               .expect(400)
               .then(({ body }) => {
                 expect(body.msg).toBe('Bad request or invalid input')
               });
-          });
+        });
 
-          test("status 404 when given out of range page number ", () => {
+        test("status 404 when given out of range page number ", () => {
             return request(app)
               .get("/api/reviews?limit=8&&p=99")
               .expect(404)
               .then(({ body }) => {
                 expect(body.msg).toBe('Review not found or empty page')
               });
-          });
+        });
 
     }) 
    
@@ -494,41 +494,50 @@ describe('app', () => {
               });
           });
 
-          test("status 400 when given invalid value that is not a number", () => {
+        test("status 400 when given invalid value that is not a number", () => {
             return request(app)
-              .get("/api/reviews/2/comments?limit=invalid")
-              .expect(400)
-              .then(({ body }) => {
-                expect(body.msg).toBe('Bad request or invalid input');
-              });
-          });
+                .get("/api/reviews/2/comments?limit=invalid")
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input');
+            });
+        });
 
-          test("status 400 when given invalid value for page such as p = 'invalid'", () => {
+        test("status 400 when given invalid value for page such as p = 'invalid'", () => {
             return request(app)
-              .get("/api/reviews/2/comments?limit=5&&p=invalid")
-              .expect(400)
-              .then(({ body }) => {
-                expect(body.msg).toBe('Bad request or invalid input')
-              });
-          });
+                .get("/api/reviews/2/comments?limit=5&&p=invalid")
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input')
+            });
+        });
 
-          test("status 400 when given negative value for page such as -8", () => {
+        test("status 400 when given negative value for page such as -8", () => {
             return request(app)
-              .get("/api/reviews/2/comments?limit=10&&p=-8")
-              .expect(400)
-              .then(({ body }) => {
-                expect(body.msg).toBe('Bad request or invalid input')
-              });
-          });
+                .get("/api/reviews/2/comments?limit=10&&p=-8")
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Bad request or invalid input')
+            });
+        });
 
-          test("status 404 when given out of range page number ", () => {
+        test("status 404 when given out of range page number ", () => {
             return request(app)
-              .get("/api/reviews/2/comments?limit=8&&p=99")
-              .expect(404)
-              .then(({ body }) => {
-                expect(body.msg).toBe('No comment found or empty page')
+                .get("/api/reviews/2/comments?limit=8&&p=99")
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('No comment found or empty page')
+            });
+        });
+
+        test("status 404 when query is not 'limit' nor 'p' such as query = not_a_query", () => {
+            return request(app)
+                .get("/api/reviews/2/comments?not_a_query=nothing")
+                .expect(400)
+                .then(({ body }) => {
+                expect(body.msg).toBe('Invalid: not a query');
               });
-          });
+        })
 
     })
 

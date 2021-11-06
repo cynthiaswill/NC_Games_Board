@@ -84,7 +84,11 @@ exports.selectReviews = async (sort = 'created_at', order = 'desc', category, li
           }
       }
 
-exports.selectComments = async (id, limit = 10, p = 1) => {
+exports.selectComments = async (id, limit = 10, p = 1, queryKeys) => {
+    const validQueries = ['limit', 'p'];
+    if (!queryKeys.every( key => validQueries.includes(key))) {
+        return Promise.reject({status:'400', msg: 'Invalid: not a query'})
+    };
     const offset = (p - 1) * limit;
     const queryStr = `SELECT 
         comments.comment_id, 

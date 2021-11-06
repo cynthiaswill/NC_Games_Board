@@ -50,8 +50,9 @@ exports.getReviews = (req, res, next) => {
 exports.getComments = (req, res, next) => {
     const { review_id } = req.params;
     const { limit, p } = req.query;
+    const queryKeys = Object.keys(req.query);
 
-    selectComments(review_id, limit, p).then(comments => {
+    selectComments(review_id, limit, p, queryKeys).then(comments => {
         res.send({ comments })
     })
     .catch(next)
