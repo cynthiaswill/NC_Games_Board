@@ -292,12 +292,12 @@ describe('app', () => {
               });
           });
 
-        test("status 404 with queried category do exist but no review can be found associated with it", () => {
+        test("status 200 with queried category do exist but no review can be found associated with it, returns an empty array", () => {
             return request(app)
               .get("/api/reviews?category=children's+games")
-              .expect(404)
+              .expect(200)
               .then(({ body }) => {
-                expect(body.msg).toBe('Review not found or empty page');
+                expect(body.reviews).toEqual([]);
               });
           });
 
@@ -374,12 +374,12 @@ describe('app', () => {
               });
         });
 
-        test("status 404 when given out of range page number ", () => {
+        test("status 200 when given out of range page number, returns an empty array ", () => {
             return request(app)
               .get("/api/reviews?limit=8&&p=99")
-              .expect(404)
+              .expect(200)
               .then(({ body }) => {
-                expect(body.msg).toBe('Review not found or empty page')
+                expect(body.reviews).toEqual([])
               });
         });
 
@@ -435,12 +435,12 @@ describe('app', () => {
                 })
         })
 
-        test('status 404 valid existing review_id with no associated comment', () => {
+        test('status 200 valid existing review_id with no associated comment, returns an empty array', () => {
             return request(app)
                 .get('/api/reviews/1/comments')
-                .expect(404)
+                .expect(200)
                 .then(({ body }) => {
-                    expect(body.msg).toBe('No comment found or empty page')
+                    expect(body.comments).toEqual([])
                 })
         })
 
@@ -521,12 +521,12 @@ describe('app', () => {
             });
         });
 
-        test("status 404 when given out of range page number ", () => {
+        test("status 200 when given out of range page number, returns an empty array", () => {
             return request(app)
                 .get("/api/reviews/2/comments?limit=8&&p=99")
-                .expect(404)
+                .expect(200)
                 .then(({ body }) => {
-                    expect(body.msg).toBe('No comment found or empty page')
+                    expect(body.comments).toEqual([]);
             });
         });
 

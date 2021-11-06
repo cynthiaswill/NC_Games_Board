@@ -71,18 +71,14 @@ exports.selectReviews = async (sort = 'created_at', order = 'desc', category, li
       
       const { rows } = await db.query(queryStr, queryValues)
 
-          if (rows.length === 0) {
-              const categoryResult = await db
-              .query(`SELECT * FROM categories WHERE slug = $1`, [category])
-              if (category && categoryResult.rows.length === 0) {
+            const categoryResult = await db
+            .query(`SELECT * FROM categories WHERE slug = $1`, [category])
+            if (category && categoryResult.rows.length === 0) {
                 return Promise.reject({ status: '404', msg: 'Category not found'})
-              } else {
-                  return Promise.reject({ status: '404', msg: 'Review not found or empty page'})
-              } 
-          } else {
-             return rows;
-          }
-      }
+            } else {
+                return rows;
+            }
+}
 
 exports.selectComments = async (id, limit = 10, p = 1, queryKeys) => {
     const validQueries = ['limit', 'p'];
@@ -103,18 +99,13 @@ exports.selectComments = async (id, limit = 10, p = 1, queryKeys) => {
     const { rows } = await db.query(queryStr, [id, limit, offset])
     const reviewResult = await db.query(`SELECT * FROM reviews WHERE review_id = $1`, [id])
 
-    if (rows.length !== 0) {
-        return rows;
-    }   else if (reviewResult.rows.length === 0) {
+    if (reviewResult.rows.length === 0) {
         return Promise.reject({
             status: '404',
             msg: 'This review_id does not exist!'
         });
     }   else    {
-        return Promise.reject({
-            status: '404',
-            msg: 'No comment found or empty page'
-        });
+        return rows;
     }
 }
 
