@@ -530,7 +530,7 @@ describe('app', () => {
             });
         });
 
-        test("status 404 when query is not 'limit' nor 'p' such as query = not_a_query", () => {
+        test("status 400 when query is not 'limit' nor 'p' such as query = not_a_query", () => {
             return request(app)
                 .get("/api/reviews/2/comments?not_a_query=nothing")
                 .expect(400)
