@@ -11,6 +11,7 @@ const {
     selectUser,
     updateComment
 }   = require('../models/models.js');
+const overview = require('../endpoints.json');
 
 exports.getCategories = (req, res, next) => {
     selectCategories().then(categories => {
@@ -78,10 +79,7 @@ exports.deleteComment = (req, res, next) => {
 }
 
 exports.getOverview = (req, res, next) => {
-    readOverview().then(overview => {
-        res.send({ overview })
-    })
-    .catch(next)
+    res.send(overview);
 }
 
 exports.getUsers = (req, res, next) => {

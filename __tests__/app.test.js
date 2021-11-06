@@ -663,11 +663,13 @@ describe('app', () => {
 
     describe('GET /api', () => {
         test('status 200 display an overview of all endpoints', () => {
+            const overview = require('../endpoints.json');
             return request(app)
                 .get('/api')
                 .expect(200)
                 .then(({ body }) => {
                     expect(typeof body).toBe('object');
+                    expect(body).toEqual(overview);
                 })
         })
     })
