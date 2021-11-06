@@ -265,14 +265,14 @@ describe('app', () => {
               });
           });
 
-          test("status 400 query with invalid order value", () => {
+        test("status 400 query with invalid order value", () => {
             return request(app)
               .get("/api/reviews?sort_by=title&&order=not_an_order")
               .expect(400)
               .then(({ body }) => {
                 expect(body.msg).toBe('No such column in database or invalid order type');
               });
-          });
+        });
 
         test("status 400 with invalid query type, query is not_a_query", () => {
             return request(app)
@@ -347,14 +347,14 @@ describe('app', () => {
               });
         });
 
-          test("status 400 when given invalid value for limit such as limit = 'invalid'", () => {
+        test("status 400 when given invalid value for limit such as limit = 'invalid'", () => {
             return request(app)
               .get("/api/reviews?limit=invalid")
               .expect(400)
               .then(({ body }) => {
                 expect(body.msg).toBe('Bad request or invalid input')
               });
-          });
+        });
 
         test("status 400 when given invalid value for page such as p = 'invalid'", () => {
             return request(app)
@@ -708,6 +708,15 @@ describe('app', () => {
                 .expect(404)
                 .then(({ body }) => {
                     expect(body.msg).toBe('Username not found!')
+                })
+        })
+
+        test('status 400 with invalid username', () => {
+            return request(app)
+                .get('/api/users/§§§§§')
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe('Invalid username!')
                 })
         })
     })

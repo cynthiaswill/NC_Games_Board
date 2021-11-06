@@ -136,9 +136,9 @@
 
 - `GET /api/users/:username`
 
-- [ ] Status 200, responds with single user object
-- [ ] Status 404, non existant ID, e.g 999
-- [ ] Status 400, invalid ID, e.g "not-an-id"
+- [√] Status 200, responds with single user object
+- [√] Status 404, non existant ID, e.g 999
+- [√] Status 400, invalid ID, e.g "not-an-id"
 
 - `PATCH /api/comments/:comment_id`
 
