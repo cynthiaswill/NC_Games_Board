@@ -38,7 +38,7 @@ exports.getReviews = (req, res, next) => {
 exports.postReview = (req, res, next) => {
     const { owner, title, review_body, designer, category } =
         req.body;
-    console.log(req.body);
+
     insertReview(owner, title, review_body, designer, category)
         .then((review) => {
             res.status(201).send({ review });

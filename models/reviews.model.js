@@ -129,5 +129,25 @@ exports.insertReview = async (
         designer,
         category,
     ]);
-    return rows[0];
+
+    const queryCategoryStr = `SELECT slug FROM categories;`;
+    const queryUsernameStr = `SELECT username FROM users;`;
+    const categories = await db.query(queryCategoryStr);
+    const usernames = await db.query(queryUsernameStr);
+
+    const validCategories = categories.rows.map((cat) => cat.slug);
+    const validUsernames = usernames.rows.map(
+        (name) => name.username
+    );
+    if (
+        validCategories.includes(category) &&
+        validUsernames.includes(owner)
+    ) {
+        return rows[0];
+    } else {
+        return Promise.reject({
+            status: "404",
+            msg: "No such category or username",
+        });
+    }
 };
