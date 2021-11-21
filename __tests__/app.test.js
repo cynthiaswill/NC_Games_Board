@@ -869,7 +869,7 @@ describe("app", () => {
         });
     });
 
-    describe.only("POST /api/reviews", () => {
+    describe("POST /api/reviews", () => {
         test("status 201 return posted review correctly", () => {
             return request(app)
                 .post("/api/reviews")
@@ -966,6 +966,35 @@ describe("app", () => {
                         review_id: expect.any(Number),
                         votes: expect.any(Number),
                     });
+                });
+        });
+    });
+
+    describe.only("POST /api/categories", () => {
+        test("status 201 return posted category correctly", () => {
+            return request(app)
+                .post("/api/categories")
+                .send({
+                    slug: "Test",
+                    description: "this is a test",
+                })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.category).toMatchObject({
+                        slug: "Test",
+                        description: "this is a test",
+                    });
+                });
+        });
+        test("status 400 failed to post due to slug or description is missing in request body", () => {
+            return request(app)
+                .post("/api/categories")
+                .send({})
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "Missing required field(s)!"
+                    );
                 });
         });
     });

@@ -49,3 +49,11 @@
 #     "review_body": "Farmyard fun!",
 #     "category": "strategy"
 #   }
+
+POST http://localhost:9000/api/categories
+    Content-Type: application/json
+
+    {
+    "slug": "Test",
+    "description": "this is a test"
+  }
