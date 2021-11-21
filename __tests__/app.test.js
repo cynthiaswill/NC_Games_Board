@@ -893,5 +893,20 @@ describe("app", () => {
                     });
                 });
         });
+        test("status 400 failed to post due to title, designer or review_body is missing in request body", () => {
+            return request(app)
+                .post("/api/reviews")
+                .send({
+                    owner: "mallionaire",
+                    review_body: "Farmyard fun!",
+                    category: "euro game",
+                })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "missing required field(s)!"
+                    );
+                });
+        });
     });
 });
