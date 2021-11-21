@@ -18,10 +18,10 @@
 #     { "inc_votes": -100 }
 
 
-PATCH http://localhost:9000/api/reviews/2
-    Content-Type: application/json
+# PATCH http://localhost:9000/api/reviews/2
+#     Content-Type: application/json
 
-    { "inc_votes": -100, "review_body": "test" }
+#     { "inc_votes": -100, "review_body": "test" }
 
 # GET http://localhost:9000/api/reviews
 
@@ -46,6 +46,12 @@ PATCH http://localhost:9000/api/reviews/2
 #     Content-Type: application/json
 
 #     { "inc_votes": 1 }
+
+# PATCH http://localhost:9000/api/comments/1
+#     Content-Type: application/json
+
+#     { "inc_votes": 1, "body": "edited!" }
+
 
 # GET http://localhost:9000/api/reviews?limit=8&&p=99
 
