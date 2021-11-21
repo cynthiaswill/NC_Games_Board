@@ -1276,4 +1276,121 @@ describe("app", () => {
                 });
         });
     });
+
+    describe("PATCH /api/users/:username", () => {
+        test("status 200 display an updated user with both new name and avatar", () => {
+            return request(app)
+                .patch("/api/users/mallionaire")
+                .send({
+                    name: "Jane Doe",
+                    avatar_url:
+                        "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141",
+                })
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.user).toEqual({
+                        username: "mallionaire",
+                        name: "Jane Doe",
+                        avatar_url:
+                            "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141",
+                    });
+                });
+        });
+
+        test("status 200 display an updated user with new name only", () => {
+            return request(app)
+                .patch("/api/users/mallionaire")
+                .send({ name: "Jane Doe" })
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.user).toEqual({
+                        username: "mallionaire",
+                        name: "Jane Doe",
+                        avatar_url:
+                            "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+                    });
+                });
+        });
+
+        test("status 200 display an updated user with new avatar url only", () => {
+            return request(app)
+                .patch("/api/users/mallionaire")
+                .send({
+                    avatar_url:
+                        "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141",
+                })
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.user).toEqual({
+                        username: "mallionaire",
+                        name: "haz",
+                        avatar_url:
+                            "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141",
+                    });
+                });
+        });
+
+        test("status 400 failed to update due to invalid URL format in avatar_url", () => {
+            return request(app)
+                .patch("/api/users/mallionaire")
+                .send({
+                    avatar_url: "invlaid.url.format",
+                })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe("Invalid URL format!");
+                });
+        });
+
+        test(`status 400 no name or avatar_url key on request body in patch request`, () => {
+            return request(app)
+                .patch("/api/users/mallionaire")
+                .send({})
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "Bad request or invalid input"
+                    );
+                });
+        });
+
+        test(`status 400 when there is only a name key on request body, the value of it cannot be empty, in patch request`, () => {
+            return request(app)
+                .patch(`/api/users/mallionaire`)
+                .send({ name: null })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "Bad request or invalid input"
+                    );
+                });
+        });
+
+        test(`status 200 with some extra other property(which will be ignored) appear on request body in patch request`, () => {
+            return request(app)
+                .patch(`/api/users/mallionaire`)
+                .send({ extra_key: "ignored", name: "Jane Doe" })
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.user).toEqual({
+                        username: "mallionaire",
+                        name: "Jane Doe",
+                        avatar_url:
+                            "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+                    });
+                });
+        });
+
+        test("status 404 username = does_not_exist does not exist in database", () => {
+            return request(app)
+                .patch("/api/users/does_not_exist")
+                .send({ name: "Jane Doe" })
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "This user does not exist!"
+                    );
+                });
+        });
+    });
 });

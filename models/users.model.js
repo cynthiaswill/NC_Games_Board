@@ -63,7 +63,12 @@ exports.insertUser = async (username, name, url) => {
 exports.updateUser = async (id, name, url) => {
     let queryStr = `UPDATE users SET `;
     let queryValues = [id];
-    if (name && url) {
+    if (!urlRegex.test(url) && url) {
+        return Promise.reject({
+            status: 400,
+            msg: "Invalid URL format!",
+        });
+    } else if (name && url) {
         queryStr += `name = $2, 
             avatar_url = $3 `;
         queryValues.push(name, url);
@@ -73,11 +78,6 @@ exports.updateUser = async (id, name, url) => {
     } else if (!name && url) {
         queryStr += `avatar_url = $2 `;
         queryValues.push(url);
-    } else if (!urlRegex.test(url) && url) {
-        return Promise.reject({
-            status: 400,
-            msg: "Invalid URL format!",
-        });
     } else {
         return Promise.reject({
             status: "400",
