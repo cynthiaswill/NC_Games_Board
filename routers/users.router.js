@@ -3,6 +3,7 @@ const {
     getUsers,
     getUser,
     postUser,
+    patchUser,
 } = require("../controllers/users.controller");
 const {
     handleBadMethods,
@@ -14,6 +15,10 @@ usersRouter
     .post(postUser)
     .all(handleBadMethods);
 
-usersRouter.route("/:username").get(getUser).all(handleBadMethods);
+usersRouter
+    .route("/:username")
+    .get(getUser)
+    .patch(patchUser)
+    .all(handleBadMethods);
 
 module.exports = usersRouter;

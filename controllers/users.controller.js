@@ -2,6 +2,7 @@ const {
     selectUsers,
     selectUser,
     insertUser,
+    updateUser,
 } = require("../models/users.model");
 
 exports.getUsers = (req, res, next) => {
@@ -27,6 +28,17 @@ exports.postUser = (req, res, next) => {
     insertUser(username, name, avatar_url)
         .then((user) => {
             res.status(201).send({ user });
+        })
+        .catch(next);
+};
+
+exports.patchUser = (req, res, next) => {
+    const { username } = req.params;
+    const { name, avatar_url } = req.body;
+
+    updateUser(username, name, avatar_url)
+        .then((user) => {
+            res.send({ user });
         })
         .catch(next);
 };
