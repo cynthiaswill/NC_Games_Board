@@ -25,7 +25,11 @@ exports.handlePSQLErrors = (err, req, res, next) => {
         });
     } else if (err.code === "23502") {
         res.status(400).send({
-            msg: "missing required field(s)!",
+            msg: "Missing required field(s)!",
+        });
+    } else if (err.code) {
+        res.status(400).send({
+            msg: "Database query error!",
         });
     } else next(err);
 };
