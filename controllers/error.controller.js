@@ -13,7 +13,6 @@ exports.handleCustomErrors = (err, req, res, next) => {
 };
 
 exports.handlePSQLErrors = (err, req, res, next) => {
-    console.log(err.code);
     if (["22P02", "42601", "2201W", "2201X"].includes(err.code)) {
         res.status(400).send({ msg: "Bad request or invalid input" });
     } else if (err.code === "42703") {
