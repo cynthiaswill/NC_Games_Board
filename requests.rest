@@ -50,10 +50,13 @@
 #     "category": "strategy"
 #   }
 
-POST http://localhost:9000/api/categories
-    Content-Type: application/json
+# POST http://localhost:9000/api/categories
+#     Content-Type: application/json
 
-    {
-    "slug": "Test",
-    "description": "this is a test"
-  }
+#     {
+#     "slug": "Test",
+#     "description": "this is a test"
+#   }
+
+
+# DELETE http://localhost:9000/api/reviews/9999

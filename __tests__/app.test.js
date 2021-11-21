@@ -1014,4 +1014,40 @@ describe("app", () => {
                 });
         });
     });
+
+    describe("DELETE /api/reviews/:review_id", () => {
+        test("status 204 returns No content when deleted review successfully", () => {
+            return request(app)
+                .delete("/api/reviews/1")
+                .expect(204)
+                .then(() => {
+                    return db.query("SELECT * FROM reviews");
+                })
+                .then(({ rows }) => {
+                    expect(rows.length).toBe(12);
+                });
+        });
+
+        test("status 404 requested review_to_be_deleted cannot be found", () => {
+            return request(app)
+                .delete("/api/reviews/9999")
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "This review_id does not exist!"
+                    );
+                });
+        });
+
+        test("status 400 invalid review_id such value is not a number", () => {
+            return request(app)
+                .delete("/api/reviews/not_a_number")
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "Bad request or invalid input"
+                    );
+                });
+        });
+    });
 });

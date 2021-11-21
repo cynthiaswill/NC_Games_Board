@@ -150,3 +150,18 @@ exports.insertReview = async (
         });
     }
 };
+
+exports.removeReview = async (id) => {
+    const { rows } = await db.query(
+        `DELETE FROM reviews WHERE review_id = $1 RETURNING *;`,
+        [id]
+    );
+    if (rows.length !== 0) {
+        return rows[0];
+    } else {
+        return Promise.reject({
+            status: "404",
+            msg: "This review_id does not exist!",
+        });
+    }
+};
