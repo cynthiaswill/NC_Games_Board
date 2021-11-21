@@ -35,9 +35,32 @@ describe("app", () => {
     });
 
     describe("GET /api/reviews/:review_id", () => {
-        test("status 200 returns get review by id correctly", () => {
+        test("status 200 returns get review by id number correctly", () => {
             return request(app)
                 .get("/api/reviews/2")
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.review.review_id).toBe(2);
+                    expect(body.review.comment_count).toBe(3);
+                    expect(body.review).toEqual({
+                        review_id: 2,
+                        title: "Jenga",
+                        review_body: "Fiddly fun for all the family",
+                        designer: "Leslie Scott",
+                        review_img_url:
+                            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                        votes: 5,
+                        category: "dexterity",
+                        owner: "philippaclaire9",
+                        created_at: "2021-01-18T10:01:41.251Z",
+                        comment_count: 3,
+                    });
+                });
+        });
+
+        test("status 200 returns get review by title correctly", () => {
+            return request(app)
+                .get("/api/reviews/Jenga")
                 .expect(200)
                 .then(({ body }) => {
                     expect(body.review.review_id).toBe(2);
@@ -69,13 +92,13 @@ describe("app", () => {
                 });
         });
 
-        test("status 400 bad request invalid review_id", () => {
+        test("status 404 when searching not_a_review_title", () => {
             return request(app)
-                .get("/api/reviews/not_a_review_id")
-                .expect(400)
+                .get("/api/reviews/not_a_review_id_or_title")
+                .expect(404)
                 .then(({ body }) => {
                     expect(body.msg).toBe(
-                        "Bad request or invalid input"
+                        "This review does not exist or no such title!"
                     );
                 });
         });

@@ -28,7 +28,7 @@ exports.selectReviewById = async (id) => {
         } else {
             return Promise.reject({
                 status: "404",
-                msg: "This review does not exist!",
+                msg: "This review does not exist or no such title!",
             });
         }
     }
