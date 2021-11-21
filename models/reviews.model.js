@@ -122,14 +122,6 @@ exports.insertReview = async (
         VALUES ($1, $2, $3, $4, $5)
         RETURNING *;`;
 
-    const { rows } = await db.query(queryStr, [
-        owner,
-        title,
-        review_body,
-        designer,
-        category,
-    ]);
-
     const queryCategoryStr = `SELECT slug FROM categories;`;
     const queryUsernameStr = `SELECT username FROM users;`;
     const categories = await db.query(queryCategoryStr);
@@ -143,6 +135,13 @@ exports.insertReview = async (
         validCategories.includes(category) &&
         validUsernames.includes(owner)
     ) {
+        const { rows } = await db.query(queryStr, [
+            owner,
+            title,
+            review_body,
+            designer,
+            category,
+        ]);
         return rows[0];
     } else {
         return Promise.reject({

@@ -908,5 +908,39 @@ describe("app", () => {
                     );
                 });
         });
+        test("status 404 failed to post due to invalid category in request body", () => {
+            return request(app)
+                .post("/api/reviews")
+                .send({
+                    title: "A test",
+                    designer: "Uwe Rosenberg",
+                    owner: "mallionaire",
+                    review_body: "Farmyard fun!",
+                    category: "no such category",
+                })
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "No such category or username"
+                    );
+                });
+        });
+        test("status 404 failed to post due to invalid username in request body", () => {
+            return request(app)
+                .post("/api/reviews")
+                .send({
+                    title: "A test",
+                    designer: "Uwe Rosenberg",
+                    owner: "no such username",
+                    review_body: "Farmyard fun!",
+                    category: "euro game",
+                })
+                .expect(404)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "No such category or username"
+                    );
+                });
+        });
     });
 });
