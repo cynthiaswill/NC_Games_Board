@@ -1,19 +1,36 @@
 const db = require("../db/connection");
 
 exports.selectReviewById = async (id) => {
-    const queryStr = `SELECT reviews.*,
-     COUNT(comments.review_id)::INT AS comment_count FROM reviews 
-     LEFT JOIN comments ON reviews.review_id = comments.review_id 
-     WHERE reviews.review_id = $1 
-     GROUP BY reviews.review_id;`;
-    const { rows } = await db.query(queryStr, [id]);
-    if (rows.length !== 0) {
-        return rows[0];
+    if (!/[^\d]/.test(id)) {
+        const queryStr = `SELECT reviews.*,
+        COUNT(comments.review_id)::INT AS comment_count FROM reviews 
+        LEFT JOIN comments ON reviews.review_id = comments.review_id 
+        WHERE reviews.review_id = $1 
+        GROUP BY reviews.review_id;`;
+        const { rows } = await db.query(queryStr, [id]);
+        if (rows.length !== 0) {
+            return rows[0];
+        } else {
+            return Promise.reject({
+                status: "404",
+                msg: "This review does not exist!",
+            });
+        }
     } else {
-        return Promise.reject({
-            status: "404",
-            msg: "This review does not exist!",
-        });
+        const queryStr = `SELECT reviews.*,
+            COUNT(comments.review_id)::INT AS comment_count FROM reviews
+            LEFT JOIN comments ON reviews.review_id = comments.review_id
+            WHERE reviews.title = $1
+            GROUP BY reviews.review_id;`;
+        const { rows } = await db.query(queryStr, [id]);
+        if (rows.length !== 0) {
+            return rows[0];
+        } else {
+            return Promise.reject({
+                status: "404",
+                msg: "This review does not exist!",
+            });
+        }
     }
 };
 

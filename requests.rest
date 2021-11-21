@@ -8,6 +8,10 @@
 
 # GET http://localhost:9000/api/reviews/not_an_review_id
 
+# GET http://localhost:9000/api/reviews/Monopoly
+
+# GET http://localhost:9000/api/reviews/Culture a Love of Agriculture With Agricola
+
 # PATCH http://localhost:9000/api/reviews/2
 #     Content-Type: application/json
 
