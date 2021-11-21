@@ -970,7 +970,7 @@ describe("app", () => {
         });
     });
 
-    describe.only("POST /api/categories", () => {
+    describe("POST /api/categories", () => {
         test("status 201 return posted category correctly", () => {
             return request(app)
                 .post("/api/categories")
@@ -995,6 +995,22 @@ describe("app", () => {
                     expect(body.msg).toBe(
                         "Missing required field(s)!"
                     );
+                });
+        });
+        test("status 201 category posted despite with some extra property(which will be ignored) appear on POST request body", () => {
+            return request(app)
+                .post("/api/categories")
+                .send({
+                    slug: "Test",
+                    description: "this is a test",
+                    something_else: "ignored",
+                })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.category).toEqual({
+                        slug: "Test",
+                        description: "this is a test",
+                    });
                 });
         });
     });
