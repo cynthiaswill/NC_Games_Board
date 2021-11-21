@@ -1173,4 +1173,57 @@ describe("app", () => {
                 });
         });
     });
+
+    describe.only("POST /api/users", () => {
+        test("status 201 return posted user correctly", () => {
+            return request(app)
+                .post("/api/users")
+                .send({
+                    username: "testusername123",
+                    name: "Jane Doe",
+                    avatar_url:
+                        "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141",
+                })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.user).toEqual({
+                        username: "testusername123",
+                        name: "Jane Doe",
+                        avatar_url:
+                            "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141",
+                    });
+                });
+        });
+        test("status 400 failed to post due to username or name is missing in request body", () => {
+            return request(app)
+                .post("/api/users")
+                .send({
+                    avatar_url:
+                        "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141",
+                })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "Missing required field(s)!"
+                    );
+                });
+        });
+        test("status 201 category posted despite with some extra property(which will be ignored) appear on POST request body", () => {
+            return request(app)
+                .post("/api/users")
+                .send({
+                    username: "testusername123",
+                    name: "Jane Doe",
+                    something_else: "ignored",
+                })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.user).toEqual({
+                        username: "testusername123",
+                        avatar_url: null,
+                        name: "Jane Doe",
+                    });
+                });
+        });
+    });
 });

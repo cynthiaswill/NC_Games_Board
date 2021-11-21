@@ -76,3 +76,13 @@
 
 
 # DELETE http://localhost:9000/api/reviews/9999
+
+
+POST http://localhost:9000/api/users
+    Content-Type: application/json
+
+    {
+    "username": "testusername123",
+    "name": "Jane Doe",
+    "url": "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141"
+  }
