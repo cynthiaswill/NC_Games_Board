@@ -17,6 +17,12 @@
 
 #     { "inc_votes": -100 }
 
+
+PATCH http://localhost:9000/api/reviews/2
+    Content-Type: application/json
+
+    { "inc_votes": -100, "review_body": "test" }
+
 # GET http://localhost:9000/api/reviews
 
 # GET http://localhost:9000/api/reviews?category=dexterity&&sort_by=title&&order=asc
