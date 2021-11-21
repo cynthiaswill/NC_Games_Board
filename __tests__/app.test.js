@@ -1174,7 +1174,7 @@ describe("app", () => {
         });
     });
 
-    describe.only("POST /api/users", () => {
+    describe("POST /api/users", () => {
         test("status 201 return posted user correctly", () => {
             return request(app)
                 .post("/api/users")
@@ -1194,6 +1194,24 @@ describe("app", () => {
                     });
                 });
         });
+
+        test("status 201 return posted user with null value in avatar_url if avatar_url is omitted in request body", () => {
+            return request(app)
+                .post("/api/users")
+                .send({
+                    username: "testusername123",
+                    name: "Jane Doe",
+                })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.user).toEqual({
+                        username: "testusername123",
+                        name: "Jane Doe",
+                        avatar_url: null,
+                    });
+                });
+        });
+
         test("status 400 failed to post due to username or name is missing in request body", () => {
             return request(app)
                 .post("/api/users")
@@ -1208,6 +1226,38 @@ describe("app", () => {
                     );
                 });
         });
+
+        test("status 400 failed to post due to username already existed in database", () => {
+            return request(app)
+                .post("/api/users")
+                .send({
+                    username: "mallionaire",
+                    name: "Jane Doe",
+                    avatar_url:
+                        "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141",
+                })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "This username already exist!"
+                    );
+                });
+        });
+
+        test("status 400 failed to post due to invalid URL format in avatar_url", () => {
+            return request(app)
+                .post("/api/users")
+                .send({
+                    username: "testUsername123",
+                    name: "Jane Doe",
+                    avatar_url: "invlaid.url.format",
+                })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe("Invalid URL format!");
+                });
+        });
+
         test("status 201 category posted despite with some extra property(which will be ignored) appear on POST request body", () => {
             return request(app)
                 .post("/api/users")
