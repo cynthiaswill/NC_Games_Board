@@ -38,3 +38,14 @@
 #     { "inc_votes": 1 }
 
 # GET http://localhost:9000/api/reviews?limit=8&&p=99
+
+POST http://localhost:9000/api/reviews
+    Content-Type: application/json
+
+    {
+    "title": "A test",
+    "designer": "Uwe Rosenberg",
+    "owner": "tickle122",
+    "review_body": "Farmyard fun!",
+    "category": "strategy"
+  }
