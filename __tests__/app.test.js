@@ -150,7 +150,61 @@ describe("app", () => {
                 });
         });
 
-        test(`status 400 no inc_votes key on request body in patch request`, () => {
+        test(`status 200 returns patched review with new review_body correctly`, () => {
+            return request(app)
+                .patch(`/api/reviews/2`)
+                .send({ review_body: "test" })
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.review).toEqual({
+                        review_id: 2,
+                        title: "Jenga",
+                        review_body: "test",
+                        designer: "Leslie Scott",
+                        review_img_url:
+                            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                        votes: 5,
+                        category: "dexterity",
+                        owner: "philippaclaire9",
+                        created_at: "2021-01-18T10:01:41.251Z",
+                    });
+                });
+        });
+
+        test(`status 200 returns patched review with both correct votes and new review_body correctly`, () => {
+            return request(app)
+                .patch(`/api/reviews/2`)
+                .send({ inc_votes: -100, review_body: "test" })
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.review).toEqual({
+                        review_id: 2,
+                        title: "Jenga",
+                        review_body: "test",
+                        designer: "Leslie Scott",
+                        review_img_url:
+                            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                        votes: -95,
+                        category: "dexterity",
+                        owner: "philippaclaire9",
+                        created_at: "2021-01-18T10:01:41.251Z",
+                    });
+                });
+        });
+
+        test(`status 400 request body with review_body key but left empty without a value`, () => {
+            return request(app)
+                .patch(`/api/reviews/2`)
+                .send({ review_body: null })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "Bad request or invalid input"
+                    );
+                });
+        });
+
+        test(`status 400 no inc_votes or review_body key on request body in patch request`, () => {
             return request(app)
                 .patch(`/api/reviews/2`)
                 .send({})
