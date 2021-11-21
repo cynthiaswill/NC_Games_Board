@@ -880,7 +880,41 @@ describe("app", () => {
                 });
         });
 
-        test(`status 400 no inc_votes key on request body in patch request`, () => {
+        test("status 200 display an updated comment with new body", () => {
+            return request(app)
+                .patch("/api/comments/2")
+                .send({ body: "edited new body!" })
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.comment).toEqual({
+                        comment_id: 2,
+                        author: "mallionaire",
+                        review_id: 3,
+                        votes: 13,
+                        created_at: "2021-01-18T10:09:05.410Z",
+                        body: "edited new body!",
+                    });
+                });
+        });
+
+        test("status 200 display an updated comment with both correct votes and a new body", () => {
+            return request(app)
+                .patch("/api/comments/2")
+                .send({ inc_votes: 1, body: "edited new body!" })
+                .expect(200)
+                .then(({ body }) => {
+                    expect(body.comment).toEqual({
+                        comment_id: 2,
+                        author: "mallionaire",
+                        review_id: 3,
+                        votes: 14,
+                        created_at: "2021-01-18T10:09:05.410Z",
+                        body: "edited new body!",
+                    });
+                });
+        });
+
+        test(`status 400 no inc_votes or body key on request body in patch request`, () => {
             return request(app)
                 .patch(`/api/comments/2`)
                 .send({})
@@ -896,6 +930,18 @@ describe("app", () => {
             return request(app)
                 .patch(`/api/comments/2`)
                 .send({ inc_votes: "not-valid" })
+                .expect(400)
+                .then(({ body }) => {
+                    expect(body.msg).toBe(
+                        "Bad request or invalid input"
+                    );
+                });
+        });
+
+        test(`status 400 when there is only a body key on request body, the value of it cannot be empty, in patch request`, () => {
+            return request(app)
+                .patch(`/api/comments/2`)
+                .send({ body: null })
                 .expect(400)
                 .then(({ body }) => {
                     expect(body.msg).toBe(

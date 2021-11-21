@@ -152,7 +152,7 @@
 ### Easier
 
 -   [√] Patch: Edit an review body
--   [ ] Patch: Edit a comment body
+-   [√] Patch: Edit a comment body
 -   [ ] Patch: Edit a user's information
 -   [√] Get: Search for an review by title
 -   [ ] Post: add a new user
