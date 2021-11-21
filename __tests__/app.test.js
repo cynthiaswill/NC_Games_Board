@@ -942,5 +942,30 @@ describe("app", () => {
                     );
                 });
         });
+        test("status 201 review posted despite with some extra property(which will be ignored) appear on POST request body", () => {
+            return request(app)
+                .post("/api/reviews")
+                .send({
+                    title: "A test",
+                    designer: "Uwe Rosenberg",
+                    owner: "mallionaire",
+                    review_body: "Farmyard fun!",
+                    category: "euro game",
+                    something_else: "ignored",
+                })
+                .expect(201)
+                .then(({ body }) => {
+                    expect(body.review).toMatchObject({
+                        title: "A test",
+                        designer: "Uwe Rosenberg",
+                        owner: "mallionaire",
+                        review_body: "Farmyard fun!",
+                        category: "euro game",
+                        created_at: expect.any(String),
+                        review_id: expect.any(Number),
+                        votes: expect.any(Number),
+                    });
+                });
+        });
     });
 });
