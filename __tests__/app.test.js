@@ -471,7 +471,7 @@ describe("app", () => {
   });
 
   describe("GET /api/reviews/:review_id/comments", () => {
-    test("status 200 returns array of comments by review_id with default limit", () => {
+    test("status 200 returns array of comments by review_id with default limit and sorted by date_created desc", () => {
       return request(app)
         .get("/api/reviews/2/comments")
         .expect(200)
