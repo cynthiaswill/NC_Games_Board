@@ -478,6 +478,13 @@ describe("app", () => {
         .then(({ body }) => {
           expect(body.comments).toEqual([
             {
+              author: "mallionaire",
+              body: "Now this is a story all about how, board games turned my life upside down",
+              comment_id: 5,
+              created_at: "2021-01-18T10:24:05.410Z",
+              votes: 13,
+            },
+            {
               author: "bainesface",
               body: "I loved this game too!",
               comment_id: 1,
@@ -490,13 +497,6 @@ describe("app", () => {
               comment_id: 4,
               created_at: "2017-11-22T12:36:03.389Z",
               votes: 16,
-            },
-            {
-              author: "mallionaire",
-              body: "Now this is a story all about how, board games turned my life upside down",
-              comment_id: 5,
-              created_at: "2021-01-18T10:24:05.410Z",
-              votes: 13,
             },
           ]);
         });
@@ -536,17 +536,17 @@ describe("app", () => {
         .then(({ body }) => {
           expect(body.comments).toEqual([
             {
+              author: "mallionaire",
+              body: "Now this is a story all about how, board games turned my life upside down",
+              comment_id: 5,
+              created_at: "2021-01-18T10:24:05.410Z",
+              votes: 13,
+            },
+            {
               author: "bainesface",
               body: "I loved this game too!",
               comment_id: 1,
               created_at: "2017-11-22T12:43:33.389Z",
-              votes: 16,
-            },
-            {
-              author: "bainesface",
-              body: "EPIC board game!",
-              comment_id: 4,
-              created_at: "2017-11-22T12:36:03.389Z",
               votes: 16,
             },
           ]);
@@ -561,9 +561,9 @@ describe("app", () => {
           expect(body.comments).toEqual([
             {
               author: "bainesface",
-              body: "EPIC board game!",
-              comment_id: 4,
-              created_at: "2017-11-22T12:36:03.389Z",
+              body: "I loved this game too!",
+              comment_id: 1,
+              created_at: "2017-11-22T12:43:33.389Z",
               votes: 16,
             },
           ]);
