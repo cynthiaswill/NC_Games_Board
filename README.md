@@ -1,46 +1,72 @@
-# Northcoders House of Games API
+# NC Board Game Reviews API
 
 ## Background
 
-We will be building an API for the purpose of accessing application data programmatically. The intention here is to mimick the building of a real world backend service (such as reddit) which should provide this information to the front end architecture.
+This is a **back end API**. The intention here is to mimick the building of a real world backend service (such as reddit) which provides information to the front end architecture.
 
-Your database will be PSQL, and you will interact with it using [node-postgres](https://node-postgres.com/).
+The database is built with PSQL by using [node-postgres](https://node-postgres.com/).
+
+### The hosted version of this **backend API** is available at:
+
+- https://nc-games-board.herokuapp.com/api
+
+### This API provide data to the front end app available at:
+
+- Front End Git Repo:
+  - https://github.com/cynthiaswill/nc-board-game-reviews
+- Front End hosted version:
+  - https://quizzical-bohr-776a6e.netlify.app/reviews
+
+#
 
 ## Step 1 - Setting up your project
 
-You will need to create _two_ `.env` files for your project: `.env.test` and `.env.development`. Into each, add `PGDATABASE=<database_name_here>`, with the correct database name for that environment (see `/db/setup.sql` for the database names). Double check that these `.env` files are .gitignored.
+- Tested minimum version of Node v16.13.1.
+- Clone the entire repo into a local folder, type 'npm install' in terminal to install all dependencies before running the app.
 
-You have also been provided with a `db` folder with some data, a [setup.sql](./db/setup.sql) file and  a `seeds` folder. You should also take a minute to familiarise yourself with the npm scripts you have been provided.
+```
+$ git clone https://github.com/cynthiaswill/NC_Games_Board.git
+$ cd NC_Games_board
+$ npm install
 
-The job of `index.js` in each the data folders is to export out all the data from that folder, currently stored in separate files. This is so that, when you need access to the data elsewhere, you can write one convenient require statement - to the index file, rather than having to require each file individually. Think of it like a index of a book - a place to refer to! Make sure the index file exports an object with values of the data from that folder with the keys:
+```
 
-- `categoryData`
-- `reviewData`
-- `userData`
-- `commentData`
+- You will need to create _two_ `.env` files for your project: `.env.test` and `.env.development`. Into each, add `PGDATABASE=<database_name_here>`, with the correct database name for that environment (see `/db/setup.sql` for the database names). Double check that these `.env` files are .gitignored.
+
+- You have also been provided with a `db` folder with some data, a [setup.sql](./db/setup.sql) file and a `seeds` folder.
 
 ## Step 2 - Creating tables and Seeding
 
-You will need to create your tables and write your seed function to insert the data into your database.
+- After installed dependencies, you will need to run the following in terminal to setup database
 
-In order to both create the tables and seed your data, you will need the connection to your database. You can find this in the provided `connection.js`.
+```
+$ npm run setup-dbs
+```
 
 ### Creating Tables
 
-You should have separate tables for `categories`, `reviews`, `users` and `comments`. Make sure to consider the order in which you create your tables. You should think about whether you require any constraints on your table columns (e.g. 'NOT NULL')
+You need to complete the provided seed function to insert the appropriate data into your database by running following scripts:
 
-Each category should have:
+```
+npm run seed
+npm run seed-test
+```
+
+This will create tables
+`categories`, `reviews`, `users` and `comments`.
+
+Each category have:
 
 - `slug` field which is a unique string that acts as the table's primary key
 - `description` field which is a string giving a brief description of a given category
 
-Each user should have:
+Each user have:
 
 - `username` which is the primary key & unique
 - `avatar_url`
 - `name`
 
-Each review should have:
+Each review have:
 
 - `review_id` which is the primary key
 - `title`
@@ -52,7 +78,7 @@ Each review should have:
 - `owner` field that references a user's primary key (username)
 - `created_at` defaults to the current timestamp
 
-Each comment should have:
+Each comment have:
 
 - `comment_id` which is the primary key
 - `author` field that references a user's primary key (username)
@@ -61,23 +87,29 @@ Each comment should have:
 - `created_at` defaults to the current timestamp
 - `body`
 
-### Seeding
+### You can then start the server by running:
 
-You need to complete the provided seed function to insert the appropriate data into your database.
+```
+$ npm start
+```
+
+You can also use
+
+```
+$ npm run dev
+```
+
+to start development server, which will automatically re-seed the data, or typing:
+
+```
+$ npm run test
+```
+
+to run test by jest, which will re-seed a pool of test data automatically.
 
 ---
 
-## Step 3 - Building Endpoints
-
-- Use proper project configuration from the offset, being sure to treat development and test environments differently.
-- Test each route **as you go**, checking both successful requests **and the variety of errors you could expect to encounter** [See the error-handling file here for ideas of errors that will need to be considered](error-handling.md).
-- After taking the happy path when testing a route, think about how a client could make it go wrong. Add a test for that situation, then error handling to deal with it gracefully.
-
----
-
-Work through building endpoints in the following order:
-
-_This is a summary of all the endpoints. More detail about each endpoint is further down this document._
+## Endpoints
 
 **Essential endpoints**
 
@@ -92,10 +124,6 @@ DELETE /api/comments/:comment_id
 GET /api
 ```
 
-> Hosting and README time!
-
-**Next endpoints to work through**
-
 ```http
 GET /api/users
 GET /api/users/:username
@@ -104,7 +132,7 @@ PATCH /api/comments/:comment_id
 
 ---
 
-All of your endpoints should send the responses specified below in an **object**, with a **key name** of what it is that being sent. E.g.
+All endpoints send the responses specified below in an **object**, with a **key name** of what it is that being sent. E.g.
 
 ```json
 {
@@ -116,10 +144,6 @@ All of your endpoints should send the responses specified below in an **object**
     {
       "description": "Players attempt to uncover each other's hidden role",
       "slug": "Social deduction"
-    },
-    {
-      "description": "Games involving physical skill",
-      "slug": "Dexterity"
     }
   ]
 }
@@ -128,6 +152,16 @@ All of your endpoints should send the responses specified below in an **object**
 ---
 
 ### Essential Routes
+
+---
+
+#### **GET /api**
+
+Responds with an overview of the API:
+
+- JSON describing all the available endpoints on your API
+
+---
 
 #### **GET /api/categories**
 
@@ -239,31 +273,6 @@ Responds with:
 
 ---
 
-#### **GET /api**
-
-Responds with:
-
-- JSON describing all the available endpoints on your API
-
----
-
-### **STOP POINT: Hosting and README!**
-
-- If you _have_ already hosted your app at this point, remember to push up to `heroku` your updated code
-- If you haven't already hosted your app, now is the time! Follow the instructions in [hosting.md](./hosting.md)
-- Write your README, including the following information:
-  - [ ] Link to hosted version
-  - [ ] Write a summary of what the project is
-  - [ ] Provide clear instructions of how to clone, install dependencies, seed local database, and run tests
-  - [ ] Include information about how to create the two `.env` files
-  - [ ] Specify minimum versions of `Node.js` and `Postgres` needed to run the project
-
-**Remember that this README is targetted at people who will come to your repo (potentially from your CV or portfolio website) and want to see what you have created, and try it out for themselves(not _just_ to look at your code!). So it is really important to include a link to the hosted version, as well as implement the above `GET /api` endpoint so that it is clear what your api does.**
-
----
-
-### Further Routes
-
 #### **GET /api/users**
 
 Responds with:
@@ -304,11 +313,7 @@ Responds with:
 
 ---
 
-### _Even more_ endpoints/tasks
-
-#### Adding pagination to GET /api/reviews
-
-> To make sure that an API can handle large amounts of data, it is often necessary to use **pagination**. Head over to [Google](https://www.google.co.uk/search?q=cute+puppies), and you will notice that the search results are broken down into pages. It would not be feasible to serve up _all_ the results of a search in one go. The same is true of websites / apps like Facebook or Twitter (except they hide this by making requests for the next page in the background, when we scroll to the bottom of the browser). We can implement this functionality on our `/api/reviews` and `/api/comments` endpoints.
+### Adding pagination to GET /api/reviews
 
 - Should accepts the following queries:
   - `limit`, which limits the number of responses (defaults to 10)
@@ -372,3 +377,27 @@ Should:
 Respond with:
 
 - status 204 and no content
+
+#
+
+### Extra Routes
+
+- GET /api/users
+
+- PATCH /api/comments/:comment_id
+
+- Patch: Edit an review body
+
+- Patch: Edit a comment body
+
+- Patch: Edit a user's information
+
+- Get: Search for an review by title
+
+- Post: add a new user
+
+#
+
+### Example of requests:
+
+- There is a file in root of this folder called `request.rest` which shows example of all requests can be sent to this API. To see the example of responce, please check overview on API route at `/api`.
