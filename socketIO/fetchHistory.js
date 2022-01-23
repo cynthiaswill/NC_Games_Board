@@ -16,7 +16,7 @@ async function fetchHistory(roomName) {
       // sort returned documents in ascending order by title (A->Z)
       sort: { timestamp: 1 },
       // Include only the `username` and `text` fields in each returned document
-      projection: { _id: 0, username: 1, messageBody: 1, dateCreated: 1 },
+      projection: { _id: 1, username: 1, messageBody: 1, dateCreated: 1 },
     };
     const cursor = history.find(query, options);
     // print a message if no documents were found
