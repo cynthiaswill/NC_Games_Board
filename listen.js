@@ -46,7 +46,9 @@ io.on("connection", (socket) => {
           dateCreated: new Date(),
         };
         const result = await history.insertOne(doc);
-        console.log(`A document was inserted with the _id: ${result.insertedId}`);
+        console.log(
+          `A document was inserted with the _id: ${result.insertedId} by ${p_user.username}`
+        );
       } finally {
         await client.close();
       }
