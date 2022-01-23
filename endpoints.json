@@ -238,5 +238,24 @@
         "avatar_url": "https://vignette.wikia.nocookie.net/mrmen/images/4/4f/MR_JELLY_4A.jpg/revision/latest?cb=20180104121141"
       }
     }
+  },
+
+  "GET /api/messages/:room": {
+    "description": "serves an array of all messages from a specific chat room",
+    "queries": [],
+    "example response": {
+      "history": [
+        {
+          "username": "anonymous",
+          "messageBody": "hello",
+          "dateCreated": "2022-01-23T10:36:44.488Z"
+        },
+        {
+          "username": "anonymous",
+          "messageBody": "testing if this is inserted into DB",
+          "dateCreated": "2022-01-23T14:30:51.413Z"
+        }
+      ]
+    }
   }
 }
