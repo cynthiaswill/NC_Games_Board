@@ -250,12 +250,6 @@
           "username": "anonymous",
           "messageBody": "hello",
           "dateCreated": "2022-01-23T10:36:44.488Z"
-        },
-        {
-          "_id": "61ed669b23646734bc7eddcd",
-          "username": "anonymous",
-          "messageBody": "testing if this is inserted into DB",
-          "dateCreated": "2022-01-23T14:30:51.413Z"
         }
       ]
     }
