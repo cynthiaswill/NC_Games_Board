@@ -12,8 +12,12 @@ function join_User(id, username, roomName) {
 
 console.log("user out", c_users);
 
-function get_Current_User(id) {
-  return c_users.find((p_user) => p_user.id === id);
+function get_Last_User(id) {
+  const matchedUsers = c_users.filter((user) => {
+    return user.id === id;
+  });
+  const users = [...matchedUsers];
+  return users[users.length - 1];
 }
 
 // called when the user leaves the chat and its user object deleted from array
@@ -27,6 +31,6 @@ function user_Disconnect(id) {
 
 module.exports = {
   join_User,
-  get_Current_User,
+  get_Last_User,
   user_Disconnect,
 };

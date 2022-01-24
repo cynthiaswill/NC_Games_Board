@@ -1,6 +1,6 @@
 const app = require("./app");
 const socket = require("socket.io");
-const { get_Current_User, user_Disconnect, join_User } = require("./socketIO/socketUser");
+const { get_Last_User, user_Disconnect, join_User } = require("./socketIO/socketUser");
 const { MongoClient } = require("mongodb");
 
 const { PORT = 9000 } = process.env;
@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
   //listener#2: user sending message
   socket.on("chat", (messageBody) => {
     //gets the room user and the message sent
-    const p_user = get_Current_User(socket.id);
+    const p_user = get_Last_User(socket.id);
     console.log(p_user.username, p_user.roomName, "<<<<<<<<");
 
     // insert sent message into database
