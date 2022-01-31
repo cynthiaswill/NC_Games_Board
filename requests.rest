@@ -100,3 +100,11 @@
 
 
 # GET http://localhost:9000/api/messages/
+
+
+# PATCH http://localhost:9000/api/messages/
+#     Content-Type: application/json
+
+#     {
+#     "onlineUsers": ["test_user","test_user2"]
+#   }

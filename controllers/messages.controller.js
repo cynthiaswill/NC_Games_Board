@@ -1,4 +1,8 @@
-const { fetchHistoryByRoom, fetchOnlineUsers } = require("../models/messages.model");
+const {
+  fetchHistoryByRoom,
+  fetchOnlineUsers,
+  renewOnlineUsers,
+} = require("../models/messages.model");
 
 exports.getHistoryByRoom = (req, res, next) => {
   const { room } = req.params;

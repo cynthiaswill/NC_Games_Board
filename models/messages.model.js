@@ -75,6 +75,7 @@ exports.renewOnlineUsers = async (list) => {
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
+    return { onlineUsers: [...list] };
   } catch (error) {
     console.dir(error);
   } finally {
