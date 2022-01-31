@@ -9,7 +9,7 @@ const client = new MongoClient(uri, {
 const c_users = [];
 const onlineUsers = [];
 
-const asyncUpdateUserList = async function updateUserList() {
+const asyncUpdateUserList = async () => {
   try {
     await client.connect();
 
