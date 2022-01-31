@@ -1,9 +1,25 @@
-const { fetchHistory, fetchUserList } = require("../socketIO/fetchHistory");
+const { fetchHistory } = require("../socketIO/fetchHistory");
+const { client } = require("../socketIO/socketUser");
 
 exports.fetchHistoryByRoom = async (room) => {
   return await fetchHistory(room);
 };
 
 exports.fetchOnlineUsers = async () => {
-  return await fetchUserList();
+  try {
+    await client.connect();
+    const database = client.db("My_test_project");
+    const history = database.collection("chatHistory");
+    // query for chatHistory with the matching roomName
+    const query = { title: "online users list" };
+    const options = {
+      // Include only the `username` and `text` fields in each returned document
+      projection: { onlineUsers: 1 },
+    };
+    const list = await history.findOne(query, options);
+    console.log(list, "online_user_list");
+    return list;
+  } finally {
+    await client.close();
+  }
 };
