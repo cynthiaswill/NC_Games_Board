@@ -42,10 +42,10 @@ async function fetchUserList() {
     };
     const list = history.findOne(query, options);
     console.log(list);
+    return list;
   } finally {
     await client.close();
   }
-  return list;
 }
 
 module.exports = { fetchHistory, fetchUserList };
