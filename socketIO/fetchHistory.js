@@ -1,8 +1,4 @@
-const { MongoClient } = require("mongodb");
-
-const uri =
-  "mongodb+srv://yzhang4:123456abc@cluster0.rspyf.mongodb.net/My_test_project?retryWrites=true&w=majority";
-const client = new MongoClient(uri);
+const { client } = require("./socketUser");
 
 async function fetchHistory(roomName) {
   const chatHistory = [];

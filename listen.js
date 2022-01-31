@@ -1,7 +1,11 @@
 const app = require("./app");
 const socket = require("socket.io");
-const { get_Last_User, user_Disconnect, join_User } = require("./socketIO/socketUser");
-const { MongoClient } = require("mongodb");
+const {
+  get_Last_User,
+  user_Disconnect,
+  join_User,
+  client,
+} = require("./socketIO/socketUser");
 
 const { PORT = 9000 } = process.env;
 const httpServer = app.listen(PORT, () => {
@@ -10,12 +14,6 @@ const httpServer = app.listen(PORT, () => {
 
 const io = socket(httpServer, {
   cors: { origin: "*" },
-});
-const uri =
-  "mongodb+srv://yzhang4:123456abc@cluster0.rspyf.mongodb.net/My_test_project?retryWrites=true&w=majority";
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 });
 
 //listener#1: initialise socket io connection
