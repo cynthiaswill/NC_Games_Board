@@ -1,4 +1,3 @@
-const { fetchHistory } = require("../socketIO/fetchHistory");
 const { client } = require("../socketIO/socketUser");
 
 exports.fetchHistoryByRoom = async (room) => {
