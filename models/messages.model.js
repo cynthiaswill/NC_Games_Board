@@ -1,6 +1,9 @@
-const { fetchHistory } = require("../socketIO/fetchHistory");
+const { fetchHistory, fetchUserList } = require("../socketIO/fetchHistory");
 
 exports.fetchHistoryByRoom = async (room) => {
-  const data = await fetchHistory(room);
-  return data;
+  return await fetchHistory(room);
+};
+
+exports.fetchOnlineUsers = async () => {
+  return await fetchUserList();
 };

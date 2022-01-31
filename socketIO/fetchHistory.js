@@ -29,4 +29,23 @@ async function fetchHistory(roomName) {
   return chatHistory;
 }
 
-module.exports = { fetchHistory };
+async function fetchUserList() {
+  try {
+    await client.connect();
+    const database = client.db("My_test_project");
+    const history = database.collection("chatHistory");
+    // query for chatHistory with the matching roomName
+    const query = { title: "online users list" };
+    const options = {
+      // Include only the `username` and `text` fields in each returned document
+      projection: { onlineUsers: 1 },
+    };
+    const list = history.findOne(query, options);
+    console.log(list);
+  } finally {
+    await client.close();
+  }
+  return list;
+}
+
+module.exports = { fetchHistory, fetchUserList };
