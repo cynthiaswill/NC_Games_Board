@@ -258,13 +258,26 @@
     }
   },
 
-  "GET /api/messages/:room": {
+  "GET /api/messages": {
     "description": "serves an array of all online users",
     "queries": [],
     "example response": {
       "list": {
         "_id": "61f81aec2b9b56fbebac61ec",
         "onlineUsers": ["anonymous", "happyamy2016", "cooljmessy"]
+      }
+    }
+  },
+
+  "PATCH /api/messages": {
+    "description": "update a list of online users",
+    "queries": [],
+    "example request body": {
+      "onlineUsers": ["test_user", "test_user2"]
+    },
+    "example response": {
+      "list": {
+        "onlineUsers": ["test_user", "test_user2"]
       }
     }
   }
