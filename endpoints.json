@@ -256,5 +256,16 @@
         }
       ]
     }
+  },
+
+  "GET /api/messages/:room": {
+    "description": "serves an array of all online users",
+    "queries": [],
+    "example response": {
+      "list": {
+        "_id": "61f81aec2b9b56fbebac61ec",
+        "onlineUsers": ["anonymous", "happyamy2016", "cooljmessy"]
+      }
+    }
   }
 }
