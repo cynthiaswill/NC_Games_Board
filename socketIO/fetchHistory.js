@@ -40,8 +40,8 @@ async function fetchUserList() {
       // Include only the `username` and `text` fields in each returned document
       projection: { onlineUsers: 1 },
     };
-    const list = history.findOne(query, options);
-    console.log(list);
+    const list = await history.findOne(query, options);
+    console.log(list, "online_user_list");
     return list;
   } finally {
     await client.close();

@@ -97,3 +97,6 @@
 #   }
 
 # GET http://localhost:9000/api/messages/Lobby
+
+
+# GET http://localhost:9000/api/messages/
