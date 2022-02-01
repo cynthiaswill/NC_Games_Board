@@ -15,7 +15,6 @@ exports.fetchHistoryByRoom = async (room) => {
         projection: { _id: 1, username: 1, messageBody: 1, dateCreated: 1 },
       };
       const cursor = history.find(query, options);
-      // print a message if no documents were found
       if ((await cursor.count()) === 0) {
         console.log("No documents found!");
       }
