@@ -35,7 +35,6 @@ exports.fetchOnlineUsers = async () => {
     await client.connect();
     const database = client.db("My_test_project");
     const history = database.collection("chatHistory");
-    // query for chatHistory with the matching roomName
     const query = { title: "online users list" };
     const options = {
       projection: { onlineUsers: 1 },
@@ -45,8 +44,6 @@ exports.fetchOnlineUsers = async () => {
     return list;
   } catch (error) {
     console.dir(error);
-  } finally {
-    await client.close();
   }
 };
 
