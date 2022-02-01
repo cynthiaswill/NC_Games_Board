@@ -4,7 +4,9 @@
 
 This is a **back end API**. The intention here is to mimick the building of a real world backend service (such as reddit) which provides information to the front end architecture.
 
-The database is built with PSQL by using [node-postgres](https://node-postgres.com/).
+The main database is built with PSQL by using [node-postgres](https://node-postgres.com/).
+
+The Live Chat is separate and built with mongoDB cloud database.
 
 ### The hosted version of this **backend API** is available at:
 
