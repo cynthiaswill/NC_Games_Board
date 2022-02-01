@@ -33,8 +33,8 @@ const updateUsersList = async () => {
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
-  } finally {
-    await client.close();
+  } catch (error) {
+    console.dir(error);
   }
 };
 
