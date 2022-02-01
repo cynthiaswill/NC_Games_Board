@@ -9,11 +9,7 @@ const {
 } = require("./controllers/error.controller");
 
 const app = express();
-app.use(
-  cors({
-    origin: "https://quizzical-bohr-776a6e.netlify.app",
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 app.use("/api", apiRouter);
