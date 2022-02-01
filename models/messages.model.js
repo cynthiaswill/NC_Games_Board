@@ -21,6 +21,8 @@ exports.fetchHistoryByRoom = async (room) => {
       await cursor.forEach((item) => {
         chatHistory.push(item);
       });
+    } catch (error) {
+      console.dir(error);
     } finally {
       await client.close();
     }
@@ -43,6 +45,8 @@ exports.fetchOnlineUsers = async () => {
     const list = await history.findOne(query, options);
     console.log(list, "online_user_list");
     return list;
+  } catch (error) {
+    console.dir(error);
   } finally {
     await client.close();
   }
@@ -71,6 +75,8 @@ exports.renewOnlineUsers = async (list) => {
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
     return { onlineUsers: [...list] };
+  } catch (error) {
+    console.dir(error);
   } finally {
     await client.close();
   }
