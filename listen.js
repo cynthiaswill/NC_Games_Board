@@ -13,7 +13,7 @@ const httpServer = app.listen(PORT, () => {
 });
 
 const io = socket(httpServer, {
-  cors: { origin: "*" },
+  cors: { origin: "https://quizzical-bohr-776a6e.netlify.app" },
 });
 
 //listener#1: initialise socket io connection
