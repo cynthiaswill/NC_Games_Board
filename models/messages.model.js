@@ -48,8 +48,6 @@ exports.fetchOnlineUsers = async () => {
     return list;
   } catch (error) {
     console.dir(error);
-  } finally {
-    await client.close();
   }
 };
 
