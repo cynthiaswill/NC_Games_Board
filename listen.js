@@ -49,9 +49,7 @@ io.on("connection", (socket) => {
         console.log(
           `A document was inserted with the _id: ${result.insertedId} by ${p_user.username}`
         );
-      } finally {
-        await client.close();
-      }
+      } 
     }
     insertIntoDB().catch(console.dir);
 

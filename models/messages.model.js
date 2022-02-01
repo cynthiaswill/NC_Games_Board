@@ -23,8 +23,6 @@ exports.fetchHistoryByRoom = async (room) => {
       });
     } catch (error) {
       console.dir(error);
-    } finally {
-      await client.close();
     }
     return chatHistory;
   };
@@ -77,7 +75,5 @@ exports.renewOnlineUsers = async (list) => {
     return { onlineUsers: [...list] };
   } catch (error) {
     console.dir(error);
-  } finally {
-    await client.close();
   }
 };
