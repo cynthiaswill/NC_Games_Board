@@ -9,7 +9,7 @@ const client = new MongoClient(uri, {
 const c_users = [];
 const onlineUsers = [];
 
-const asyncUpdateUserList = async () => {
+const updateUsersList = async () => {
   try {
     await client.connect();
 
@@ -51,7 +51,7 @@ function join_User(id, username, roomName) {
   });
   console.log(onlineUsers, "online_users");
 
-  asyncUpdateUserList();
+  updateUsersList();
 
   return p_user;
 }
@@ -74,7 +74,7 @@ function user_Disconnect(id) {
   );
   if (index !== -1) {
     onlineUsers.splice(index2, 1);
-    asyncUpdateUserList();
+    updateUsersList();
     console.log(index2, onlineUsers, "<<online_users");
     return c_users.splice(index, 1)[0];
   }
