@@ -18,7 +18,7 @@ const getUsersList = async () => {
       projection: { onlineUsers: 1 },
     };
     const list = await history.findOne(query, options);
-    console.log(list.onlineUsers, "<<<online_user_list from db");
+    console.log(list.onlineUsers, "online_user_list from db");
     return list.onlineUsers;
   } catch (error) {
     console.dir(error);
@@ -55,13 +55,10 @@ const updateUsersList = async (onlineUsers) => {
 };
 
 // joins the user to the specific chatroom
-function join_User(id, username, roomName) {
-  let onlineUsers = [];
+async function join_User(id, username, roomName) {
   const p_user = { id, username, roomName };
-  getUsersList().then((data) => {
-    onlineUsers = [...data];
-  });
-
+  const onlineUsers = await getUsersList();
+  console.log(onlineUsers, "online_users before update list");
   c_users.push(p_user);
 
   !onlineUsers.includes(username) && onlineUsers.push(username);
@@ -84,21 +81,17 @@ function get_Last_User(id) {
 }
 
 // called when the user leaves the chat and its user object deleted from array
-function user_Disconnect(id) {
-  let onlineUsers = [];
-  getUsersList().then((data) => {
-    onlineUsers = [...data];
-  });
-  const index = c_users.findIndex((p_user) => p_user.id === id);
+async function user_Disconnect(id) {
+  const onlineUsers = await getUsersList();
+  const userToDelete = get_Last_User(id);
+  console.log(onlineUsers, "online_users before delete from list");
 
-  if (index !== -1) {
-    const index2 = onlineUsers.findIndex(
-      (username) => username === c_users[index].username
-    );
-    onlineUsers.splice(index2, 1);
+  if (userToDelete.username) {
+    const index = onlineUsers.findIndex((username) => username === userToDelete.username);
+    onlineUsers.splice(index, 1);
     updateUsersList(onlineUsers);
-    console.log(index2, onlineUsers, "online_users after someone disconnects");
-    return c_users.splice(index, 1)[0];
+    console.log(onlineUsers, "online_users after someone disconnects");
+    return userToDelete;
   }
 }
 
