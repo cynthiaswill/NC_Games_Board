@@ -7,9 +7,25 @@ const client = new MongoClient(uri, {
 });
 
 const c_users = [];
-const onlineUsers = [];
 
-const updateUsersList = async () => {
+const getUsersList = async () => {
+  try {
+    await client.connect();
+    const database = client.db("My_test_project");
+    const history = database.collection("chatHistory");
+    const query = { title: "online users list" };
+    const options = {
+      projection: { onlineUsers: 1 },
+    };
+    const list = await history.findOne(query, options);
+    console.log(list.onlineUsers, "<<<online_user_list from db");
+    return list.onlineUsers;
+  } catch (error) {
+    console.dir(error);
+  }
+};
+
+const updateUsersList = async (onlineUsers) => {
   try {
     await client.connect();
 
@@ -40,18 +56,19 @@ const updateUsersList = async () => {
 
 // joins the user to the specific chatroom
 function join_User(id, username, roomName) {
+  let onlineUsers = [];
   const p_user = { id, username, roomName };
+  getUsersList().then((data) => {
+    onlineUsers = [...data];
+  });
 
   c_users.push(p_user);
 
-  c_users.forEach((user) => {
-    if (!onlineUsers.includes(user.username)) {
-      onlineUsers.push(user.username);
-    }
-  });
-  console.log(onlineUsers, "online_users");
+  !onlineUsers.includes(username) && onlineUsers.push(username);
 
-  updateUsersList();
+  console.log(onlineUsers, "online_users after update list");
+
+  updateUsersList(onlineUsers);
 
   return p_user;
 }
@@ -68,14 +85,19 @@ function get_Last_User(id) {
 
 // called when the user leaves the chat and its user object deleted from array
 function user_Disconnect(id) {
+  let onlineUsers = [];
+  getUsersList().then((data) => {
+    onlineUsers = [...data];
+  });
   const index = c_users.findIndex((p_user) => p_user.id === id);
-  const index2 = onlineUsers.findIndex(
-    (username) => username === c_users[index].username
-  );
+
   if (index !== -1) {
+    const index2 = onlineUsers.findIndex(
+      (username) => username === c_users[index].username
+    );
     onlineUsers.splice(index2, 1);
-    updateUsersList();
-    console.log(index2, onlineUsers, "<<online_users");
+    updateUsersList(onlineUsers);
+    console.log(index2, onlineUsers, "online_users after someone disconnects");
     return c_users.splice(index, 1)[0];
   }
 }
