@@ -86,7 +86,7 @@ async function user_Disconnect(id) {
   const userToDelete = get_Last_User(id);
   console.log(onlineUsers, "online_users before delete from list");
 
-  if (userToDelete.username) {
+  if (userToDelete) {
     const index = onlineUsers.findIndex((username) => username === userToDelete.username);
     onlineUsers.splice(index, 1);
     updateUsersList(onlineUsers);
