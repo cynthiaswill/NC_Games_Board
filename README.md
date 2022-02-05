@@ -8,6 +8,8 @@ The main database is built with PSQL by using [node-postgres](https://node-postg
 
 The Live Chat is separate and built with mongoDB cloud database.
 
+I have combined the express server and socketIO server into one single listener.
+
 ### The hosted version of this **backend API** is available at:
 
 - https://nc-games-board.herokuapp.com/api
@@ -397,6 +399,22 @@ Respond with:
 - Get: Search for an review by title
 
 - Post: add a new user
+
+#
+
+### Instant Messenger
+
+- GET /api/messages
+
+  - serves an array of all online users
+
+- PATCH /api/messages
+
+  - update a list of online users
+
+- GET /api/messages/:room
+
+  - serves an array of all messages from a specific chat room
 
 #
 
