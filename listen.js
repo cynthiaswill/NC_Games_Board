@@ -1,7 +1,6 @@
 const app = require("./app");
 const socket = require("socket.io");
 const {
-  getUsersList,
   insertIntoDB,
   get_Last_User,
   user_Disconnect,
@@ -17,14 +16,12 @@ const io = socket(httpServer, {
   cors: { origin: "*" },
 });
 
-const onlineUsers = getUsersList();
-
 //listener#1: initialise socket io connection
 io.on("connection", (socket) => {
   //for a new user joining the room
   socket.on("joinRoom", ({ username, roomName }) => {
     //* create user
-    const p_user = join_User(socket.id, username, roomName, onlineUsers);
+    const p_user = join_User(socket.id, username, roomName);
     console.log(socket.id, "=id");
     socket.join(p_user.roomName);
   });
@@ -49,7 +46,7 @@ io.on("connection", (socket) => {
   //listener#3: when the user exits the room
   socket.on("disconnect", async () => {
     //the user is deleted from array of users and a message displayed
-    const p_user = await user_Disconnect(socket.id, onlineUsers);
+    const p_user = await user_Disconnect(socket.id);
     console.log(p_user, "user to be disconnected");
     if (p_user) {
       io.to(p_user.roomName).emit("message", {
