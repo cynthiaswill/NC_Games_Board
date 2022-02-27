@@ -76,14 +76,11 @@ const updateUsersList = async (onlineUsers) => {
 // joins the user to the specific chatroom
 function join_User(id, username, roomName) {
   const p_user = { id, username, roomName };
-  // const onlineUsers = await getUsersList();
-  // console.log(onlineUsers, "online_users before update list");
   c_users.push(p_user);
 
+  // logic below has moved to frontend due to causing issues otherwise
+  // const onlineUsers = await getUsersList();
   // !onlineUsers.includes(username) && onlineUsers.push(username);
-
-  // console.log(onlineUsers, "online_users after update list");
-
   // updateUsersList(onlineUsers);
 
   return p_user;
