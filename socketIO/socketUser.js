@@ -7,7 +7,6 @@ const client = new MongoClient(uri, {
 });
 
 const c_users = [];
-const onlineUsers = getUsersList();
 
 async function insertIntoDB(user, room, message) {
   try {
@@ -23,12 +22,12 @@ async function insertIntoDB(user, room, message) {
     };
     const result = await history.insertOne(doc);
     console.log(`A document was inserted with the _id: ${result.insertedId} by ${user}`);
-  } catch (error) {
-    console.dir(error);
+  } finally {
+    await client.close();
   }
 }
 
-async function getUsersList() {
+const getUsersList = async () => {
   try {
     await client.connect();
     const database = client.db("My_test_project");
@@ -43,7 +42,7 @@ async function getUsersList() {
   } catch (error) {
     console.dir(error);
   }
-}
+};
 
 const updateUsersList = async (onlineUsers) => {
   try {
@@ -75,7 +74,7 @@ const updateUsersList = async (onlineUsers) => {
 };
 
 // joins the user to the specific chatroom
-function join_User(id, username, roomName) {
+async function join_User(id, username, roomName, onlineUsers) {
   const p_user = { id, username, roomName };
 
   console.log(onlineUsers, "online_users before update list");
@@ -101,7 +100,7 @@ function get_Last_User(id) {
 }
 
 // called when the user leaves the chat and its user object deleted from array
-function user_Disconnect(id) {
+async function user_Disconnect(id, onlineUsers) {
   const userToDelete = get_Last_User(id);
   console.log(onlineUsers, "online_users before delete from list");
 
@@ -115,6 +114,7 @@ function user_Disconnect(id) {
 }
 
 module.exports = {
+  getUsersList,
   join_User,
   insertIntoDB,
   get_Last_User,
