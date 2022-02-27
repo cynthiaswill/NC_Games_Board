@@ -22,8 +22,8 @@ async function insertIntoDB(user, room, message) {
     };
     const result = await history.insertOne(doc);
     console.log(`A document was inserted with the _id: ${result.insertedId} by ${user}`);
-  } catch (error) {
-    console.dir(error);
+  } finally {
+    await client.close();
   }
 }
 
