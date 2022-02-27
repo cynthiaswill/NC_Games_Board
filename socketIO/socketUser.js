@@ -8,7 +8,7 @@ const client = new MongoClient(uri, {
 
 const c_users = [];
 
-const insertIntoDB = async (user, room) => {
+async function insertIntoDB(user, room) {
   try {
     await client.connect();
     const database = client.db("My_test_project");
@@ -27,7 +27,7 @@ const insertIntoDB = async (user, room) => {
   } catch (error) {
     console.dir(error);
   }
-};
+}
 
 const getUsersList = async () => {
   try {
