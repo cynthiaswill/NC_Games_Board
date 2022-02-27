@@ -8,7 +8,7 @@ const client = new MongoClient(uri, {
 
 const c_users = [];
 
-async function insertIntoDB(user, room) {
+async function insertIntoDB(user, room, message) {
   try {
     await client.connect();
     const database = client.db("My_test_project");
@@ -17,13 +17,11 @@ async function insertIntoDB(user, room) {
     const doc = {
       username: `${user}`,
       roomName: `${room}`,
-      messageBody: `${messageBody}`,
+      messageBody: `${message}`,
       dateCreated: new Date(),
     };
     const result = await history.insertOne(doc);
-    console.log(
-      `A document was inserted with the _id: ${result.insertedId} by ${p_user.username}`
-    );
+    console.log(`A document was inserted with the _id: ${result.insertedId} by ${user}`);
   } catch (error) {
     console.dir(error);
   }
