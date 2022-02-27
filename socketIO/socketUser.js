@@ -76,7 +76,7 @@ const updateUsersList = async (onlineUsers) => {
 // joins the user to the specific chatroom
 async function join_User(id, username, roomName) {
   const p_user = { id, username, roomName };
-  const onlineUsers = await getUsersList();
+  const onlineUsers = getUsersList();
   console.log(onlineUsers, "online_users before update list");
   c_users.push(p_user);
 
@@ -101,7 +101,7 @@ function get_Last_User(id) {
 
 // called when the user leaves the chat and its user object deleted from array
 async function user_Disconnect(id) {
-  const onlineUsers = await getUsersList();
+  const onlineUsers = getUsersList();
   const userToDelete = get_Last_User(id);
   console.log(onlineUsers, "online_users before delete from list");
 
