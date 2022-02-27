@@ -100,24 +100,24 @@ function get_Last_User(id) {
 }
 
 // called when the user leaves the chat and its user object deleted from array
-// async function user_Disconnect(id) {
-//   const onlineUsers = await getUsersList();
-//   const userToDelete = get_Last_User(id);
-//   console.log(onlineUsers, "online_users before delete from list");
+async function user_Disconnect(id) {
+  const onlineUsers = await getUsersList();
+  const userToDelete = get_Last_User(id);
+  console.log(onlineUsers, "online_users before delete from list");
 
-//   if (userToDelete) {
-//     const index = onlineUsers.findIndex((username) => username === userToDelete.username);
-//     onlineUsers.splice(index, 1);
-//     updateUsersList(onlineUsers);
-//     console.log(onlineUsers, "online_users after someone disconnects");
-//     return userToDelete;
-//   }
-// }
+  if (userToDelete) {
+    const index = onlineUsers.findIndex((username) => username === userToDelete.username);
+    onlineUsers.splice(index, 1);
+    updateUsersList(onlineUsers);
+    console.log(onlineUsers, "online_users after someone disconnects");
+    return userToDelete;
+  }
+}
 
 module.exports = {
   join_User,
   insertIntoDB,
   get_Last_User,
-  // user_Disconnect,
+  user_Disconnect,
   client,
 };
