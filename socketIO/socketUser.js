@@ -74,17 +74,17 @@ const updateUsersList = async (onlineUsers) => {
 };
 
 // joins the user to the specific chatroom
-async function join_User(id, username, roomName) {
+function join_User(id, username, roomName) {
   const p_user = { id, username, roomName };
-  const onlineUsers = await getUsersList();
-  console.log(onlineUsers, "online_users before update list");
+  // const onlineUsers = await getUsersList();
+  // console.log(onlineUsers, "online_users before update list");
   c_users.push(p_user);
 
-  !onlineUsers.includes(username) && onlineUsers.push(username);
+  // !onlineUsers.includes(username) && onlineUsers.push(username);
 
-  console.log(onlineUsers, "online_users after update list");
+  // console.log(onlineUsers, "online_users after update list");
 
-  updateUsersList(onlineUsers);
+  // updateUsersList(onlineUsers);
 
   return p_user;
 }

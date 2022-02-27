@@ -44,16 +44,16 @@ io.on("connection", (socket) => {
   });
 
   //listener#3: when the user exits the room
-  // socket.on("disconnect", async () => {
-  //   //the user is deleted from array of users and a message displayed
-  //   const p_user = await user_Disconnect(socket.id);
-  //   console.log(p_user, "user to be disconnected");
-  //   if (p_user) {
-  //     io.to(p_user.roomName).emit("message", {
-  //       userId: p_user.id,
-  //       username: p_user.username,
-  //       messageBody: `${p_user.username} has left the chat`,
-  //     });
-  //   }
-  // });
+  socket.on("disconnect", async () => {
+    //the user is deleted from array of users and a message displayed
+    const p_user = await user_Disconnect(socket.id);
+    console.log(p_user, "user to be disconnected");
+    if (p_user) {
+      io.to(p_user.roomName).emit("message", {
+        userId: p_user.id,
+        username: p_user.username,
+        messageBody: `${p_user.username} has left the chat`,
+      });
+    }
+  });
 });
