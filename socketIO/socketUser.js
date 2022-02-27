@@ -8,6 +8,27 @@ const client = new MongoClient(uri, {
 
 const c_users = [];
 
+const insertIntoDB = async (user, room) => {
+  try {
+    await client.connect();
+    const database = client.db("My_test_project");
+    const history = database.collection("chatHistory");
+    // create a document to insert
+    const doc = {
+      username: `${user}`,
+      roomName: `${room}`,
+      messageBody: `${messageBody}`,
+      dateCreated: new Date(),
+    };
+    const result = await history.insertOne(doc);
+    console.log(
+      `A document was inserted with the _id: ${result.insertedId} by ${p_user.username}`
+    );
+  } catch (error) {
+    console.dir(error);
+  }
+};
+
 const getUsersList = async () => {
   try {
     await client.connect();
@@ -97,6 +118,7 @@ async function user_Disconnect(id) {
 
 module.exports = {
   join_User,
+  insertIntoDB,
   get_Last_User,
   user_Disconnect,
   client,

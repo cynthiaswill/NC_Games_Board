@@ -1,10 +1,10 @@
 const app = require("./app");
 const socket = require("socket.io");
 const {
+  insertIntoDB,
   get_Last_User,
   user_Disconnect,
   join_User,
-  client,
 } = require("./socketIO/socketUser");
 
 const { PORT = 9000 } = process.env;
@@ -33,27 +33,7 @@ io.on("connection", (socket) => {
     console.log(p_user.username, p_user.roomName, "<<<<<<<<");
 
     // insert sent message into database
-    async function insertIntoDB() {
-      try {
-        await client.connect();
-        const database = client.db("My_test_project");
-        const history = database.collection("chatHistory");
-        // create a document to insert
-        const doc = {
-          username: `${p_user.username}`,
-          roomName: `${p_user.roomName}`,
-          messageBody: `${messageBody}`,
-          dateCreated: new Date(),
-        };
-        const result = await history.insertOne(doc);
-        console.log(
-          `A document was inserted with the _id: ${result.insertedId} by ${p_user.username}`
-        );
-      } catch (error) {
-        console.dir(error);
-      }
-    }
-    insertIntoDB().catch(console.dir);
+    insertIntoDB(p_user.username, p_user.roomName).catch(console.dir);
 
     //emit sent messages using sockitIO
     io.to(p_user.roomName).emit("message", {
