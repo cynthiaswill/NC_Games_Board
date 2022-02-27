@@ -3,7 +3,7 @@ const socket = require("socket.io");
 const {
   insertIntoDB,
   get_Last_User,
-  user_Disconnect,
+  // user_Disconnect,
   join_User,
 } = require("./socketIO/socketUser");
 
@@ -46,7 +46,7 @@ io.on("connection", (socket) => {
   //listener#3: when the user exits the room
   socket.on("disconnect", async () => {
     //the user is deleted from array of users and a message displayed
-    const p_user = await user_Disconnect(socket.id);
+    // const p_user = await user_Disconnect(socket.id);
     console.log(p_user, "user to be disconnected");
     if (p_user) {
       io.to(p_user.roomName).emit("message", {
