@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
     console.log(p_user.username, p_user.roomName, "<<<<<<<<");
 
     // insert sent message into database
-    insertIntoDB(p_user.username, p_user.roomName).catch(console.dir);
+    insertIntoDB(p_user.username, p_user.roomName, messageBody).catch(console.dir);
 
     //emit sent messages using sockitIO
     io.to(p_user.roomName).emit("message", {
