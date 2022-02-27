@@ -32,15 +32,15 @@ io.on("connection", (socket) => {
     const p_user = get_Last_User(socket.id);
     console.log(p_user.username, p_user.roomName, "<<<<<<<<");
 
-    // insert sent message into database
-    insertIntoDB(p_user.username, p_user.roomName, messageBody).catch(console.dir);
-
     //emit sent messages using sockitIO
     io.to(p_user.roomName).emit("message", {
       userId: p_user.id,
       username: p_user.username,
       messageBody: messageBody,
     });
+
+    // insert sent message into database
+    insertIntoDB(p_user.username, p_user.roomName, messageBody).catch(console.dir);
   });
 
   //listener#3: when the user exits the room
