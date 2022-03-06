@@ -201,13 +201,14 @@ exports.subscribeReviewById = async (id, username) => {
     const options = { upsert: true };
     const updateDoc = {
       $set: {
-        votedUsers: list ? [...list.VotedUsers, username] : [username],
+        votedUsers: list ? [...list.votedUsers, username] : [username],
       },
     };
     const result = await subscriptions.updateOne(filter, updateDoc, options);
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
+    return { votedUsers: list ? [...list.votedUsers, username] : [username] };
   } catch (error) {
     console.dir(error);
   }
