@@ -177,8 +177,12 @@ exports.getReviewSubsById = async (id) => {
       projection: { votedUsers: 1 },
     };
     const list = await subscriptions.findOne(query, options);
-    console.log(list.votedUsers, "voted_user_list from db");
-    return list.votedUsers;
+    if (list) {
+      console.log(list.votedUsers, "voted_user_list from db");
+      return list.votedUsers;
+    } else {
+      return [];
+    }
   } catch (error) {
     console.dir(error);
   }
