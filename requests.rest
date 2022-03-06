@@ -118,3 +118,10 @@
 #     {
 #         "username": "tickle122"
 #     }
+
+# PATCH http://localhost:9000/api/reviews/2/voted
+#     Content-Type: application/json
+
+#     {
+#         "username": "tickle122"
+#     }
