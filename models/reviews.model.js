@@ -177,7 +177,7 @@ exports.getReviewSubsById = async (id) => {
       projection: { votedUsers: 1 },
     };
     const list = await subscriptions.findOne(query, options);
-    if (list) {
+    if (list && list.votedUsers) {
       console.log(list.votedUsers, "voted_user_list from db");
       return list.votedUsers;
     } else {
@@ -201,14 +201,16 @@ exports.subscribeReviewById = async (id, username) => {
     const options = { upsert: true };
     const updateDoc = {
       $set: {
-        votedUsers: list ? [...list.votedUsers, username] : [username],
+        votedUsers: list && list.votedUsers ? [...list.votedUsers, username] : [username],
       },
     };
     const result = await subscriptions.updateOne(filter, updateDoc, options);
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
-    return { votedUsers: list ? [...list.votedUsers, username] : [username] };
+    return {
+      votedUsers: list && list.votedUsers ? [...list.votedUsers, username] : [username],
+    };
   } catch (error) {
     console.dir(error);
   }
@@ -225,7 +227,8 @@ exports.unsubscribeReviewById = async (id, username) => {
     const list = await subscriptions.findOne(filter, { projection: { votedUsers: 1 } });
 
     const options = { upsert: true };
-    const updatedUsers = list ? list.votedUsers.filter((name) => name !== username) : [];
+    const updatedUsers =
+      list && list.votedUsers ? list.votedUsers.filter((name) => name !== username) : [];
     const updateDoc = {
       $set: {
         votedUsers: [...updatedUsers],
@@ -237,6 +240,89 @@ exports.unsubscribeReviewById = async (id, username) => {
     );
     return {
       votedUsers: [...updatedUsers],
+    };
+  } catch (error) {
+    console.dir(error);
+  }
+};
+
+exports.getWatchedListByReviewId = async (id) => {
+  try {
+    await client.connect();
+    const database = client.db("My_test_project");
+    const subscriptions = database.collection("subscriptions");
+    const query = { review_id: `${id}` };
+    const options = {
+      projection: { watchedUsers: 1 },
+    };
+    const list = await subscriptions.findOne(query, options);
+    if (list && list.watchedUsers) {
+      console.log(list.watchedUsers, "watched_user_list from db");
+      return list.watchedUsers;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.dir(error);
+  }
+};
+
+exports.watchById = async (id, username) => {
+  try {
+    await client.connect();
+
+    const database = client.db("My_test_project");
+    const subscriptions = database.collection("subscriptions");
+    const filter = { review_id: `${id}` };
+    // this option instructs the method to create a document if no documents match the filter
+    const list = await subscriptions.findOne(filter, { projection: { watchedUsers: 1 } });
+
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: {
+        watchedUsers:
+          list && list.watchedUsers ? [...list.watchedUsers, username] : [username],
+      },
+    };
+    const result = await subscriptions.updateOne(filter, updateDoc, options);
+    console.log(
+      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
+    );
+    return {
+      watchedUsers:
+        list && list.watchedUsers ? [...list.watchedUsers, username] : [username],
+    };
+  } catch (error) {
+    console.dir(error);
+  }
+};
+
+exports.unwatchById = async (id, username) => {
+  try {
+    await client.connect();
+
+    const database = client.db("My_test_project");
+    const subscriptions = database.collection("subscriptions");
+    const filter = { review_id: `${id}` };
+    // this option instructs the method to create a document if no documents match the filter
+    const list = await subscriptions.findOne(filter, { projection: { watchedUsers: 1 } });
+
+    const options = { upsert: true };
+    const updatedUsers =
+      list && list.watchedUsers
+        ? list.watchedUsers.filter((name) => name !== username)
+        : [];
+    const updateDoc = {
+      $set: {
+        watchedUsers: [...updatedUsers],
+      },
+    };
+    const result = await subscriptions.updateOne(filter, updateDoc, options);
+    console.log(
+      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
+    );
+    return {
+      watchedUsers: [...updatedUsers],
     };
   } catch (error) {
     console.dir(error);

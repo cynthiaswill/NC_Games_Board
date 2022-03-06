@@ -7,6 +7,9 @@ const {
   getReviewSubsById,
   subscribeReviewById,
   unsubscribeReviewById,
+  getWatchedListByReviewId,
+  watchById,
+  unwatchById,
 } = require("../models/reviews.model");
 
 exports.getReviewById = (req, res, next) => {
@@ -86,6 +89,38 @@ exports.unvoteReviewById = (req, res, next) => {
   const { username } = req.body;
 
   unsubscribeReviewById(review_id, username)
+    .then((list) => {
+      res.send({ list });
+    })
+    .catch(next);
+};
+
+exports.getWatchedByReviewId = (req, res, next) => {
+  const { review_id } = req.params;
+
+  getWatchedListByReviewId(review_id)
+    .then((list) => {
+      res.send({ list });
+    })
+    .catch(next);
+};
+
+exports.watchReviewById = (req, res, next) => {
+  const { review_id } = req.params;
+  const { username } = req.body;
+
+  watchById(review_id, username)
+    .then((list) => {
+      res.send({ list });
+    })
+    .catch(next);
+};
+
+exports.unwatchReviewById = (req, res, next) => {
+  const { review_id } = req.params;
+  const { username } = req.body;
+
+  unwatchById(review_id, username)
     .then((list) => {
       res.send({ list });
     })

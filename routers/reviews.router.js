@@ -9,6 +9,9 @@ const {
   getVotedByReviewId,
   voteReviewById,
   unvoteReviewById,
+  getWatchedByReviewId,
+  watchReviewById,
+  unwatchReviewById,
 } = require("../controllers/reviews.controller");
 const { getComments, postComment } = require("../controllers/comments.controller");
 
@@ -32,6 +35,13 @@ reviewsRouter
   .get(getVotedByReviewId)
   .post(voteReviewById)
   .patch(unvoteReviewById)
+  .all(handleBadMethods);
+
+reviewsRouter
+  .route("/:review_id/watched")
+  .get(getWatchedByReviewId)
+  .post(watchReviewById)
+  .patch(unwatchReviewById)
   .all(handleBadMethods);
 
 module.exports = reviewsRouter;

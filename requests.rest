@@ -142,3 +142,20 @@
 #     {
 #         "username": "tickle122"
 #     }
+
+
+# GET http://localhost:9000/api/reviews/2/watched
+
+# POST http://localhost:9000/api/reviews/2/watched
+#     Content-Type: application/json
+
+#     {
+#         "username": "tickle122"
+#     }
+
+# PATCH http://localhost:9000/api/reviews/2/watched
+#     Content-Type: application/json
+
+#     {
+#         "username": "tickle122"
+#     }

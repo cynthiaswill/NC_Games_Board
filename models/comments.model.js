@@ -113,7 +113,7 @@ exports.getCommentSubsById = async (id) => {
       projection: { votedUsers: 1 },
     };
     const list = await subscriptions.findOne(query, options);
-    if (list) {
+    if (list && list.votedUsers) {
       console.log(list.votedUsers, "voted_user_list from db");
       return list.votedUsers;
     } else {
@@ -137,14 +137,16 @@ exports.subscribeCommentById = async (id, username) => {
     const options = { upsert: true };
     const updateDoc = {
       $set: {
-        votedUsers: list ? [...list.votedUsers, username] : [username],
+        votedUsers: list && list.votedUsers ? [...list.votedUsers, username] : [username],
       },
     };
     const result = await subscriptions.updateOne(filter, updateDoc, options);
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
-    return { votedUsers: list ? [...list.votedUsers, username] : [username] };
+    return {
+      votedUsers: list && list.votedUsers ? [...list.votedUsers, username] : [username],
+    };
   } catch (error) {
     console.dir(error);
   }
@@ -161,7 +163,8 @@ exports.unsubscribeCommentById = async (id, username) => {
     const list = await subscriptions.findOne(filter, { projection: { votedUsers: 1 } });
 
     const options = { upsert: true };
-    const updatedUsers = list ? list.votedUsers.filter((name) => name !== username) : [];
+    const updatedUsers =
+      list && list.votedUsers ? list.votedUsers.filter((name) => name !== username) : [];
     const updateDoc = {
       $set: {
         votedUsers: [...updatedUsers],
