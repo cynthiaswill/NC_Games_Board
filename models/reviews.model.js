@@ -225,9 +225,7 @@ exports.unsubscribeReviewById = async (id, username) => {
     const list = await subscriptions.findOne(filter, { projection: { votedUsers: 1 } });
 
     const options = { upsert: true };
-    const updatedUsers = list.votedUsers
-      ? list.votedUsers.filter((name) => name !== username)
-      : [];
+    const updatedUsers = list ? list.votedUsers.filter((name) => name !== username) : [];
     const updateDoc = {
       $set: {
         votedUsers: [...updatedUsers],
@@ -237,6 +235,9 @@ exports.unsubscribeReviewById = async (id, username) => {
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
+    return {
+      votedUsers: [...updatedUsers],
+    };
   } catch (error) {
     console.dir(error);
   }
