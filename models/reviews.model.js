@@ -201,7 +201,7 @@ exports.subscribeReviewById = async (id, username) => {
     const options = { upsert: true };
     const updateDoc = {
       $set: {
-        votedUsers: [...list.votedUsers, username],
+        votedUsers: [...(list.votedUsers || []), username],
       },
     };
     const result = await subscriptions.updateOne(filter, updateDoc, options);
@@ -224,7 +224,9 @@ exports.unsubscribeReviewById = async (id, username) => {
     const list = await subscriptions.findOne(filter, { projection: { votedUsers: 1 } });
 
     const options = { upsert: true };
-    const updatedUsers = list.votedUsers.filter((name) => name !== username);
+    const updatedUsers = list.votedUsers
+      ? list.votedUsers.filter((name) => name !== username)
+      : [];
     const updateDoc = {
       $set: {
         votedUsers: [...updatedUsers],
