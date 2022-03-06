@@ -201,7 +201,7 @@ exports.subscribeReviewById = async (id, username) => {
     const options = { upsert: true };
     const updateDoc = {
       $set: {
-        votedUsers: [...(list.votedUsers || []), username],
+        votedUsers: list ? [...list.VotedUsers, username] : [username],
       },
     };
     const result = await subscriptions.updateOne(filter, updateDoc, options);
