@@ -125,3 +125,20 @@
 #     {
 #         "username": "tickle122"
 #     }
+
+
+# GET http://localhost:9000/api/comments/2/voted
+
+# POST http://localhost:9000/api/comments/2/voted
+#     Content-Type: application/json
+
+#     {
+#         "username": "tickle122"
+#     }
+
+# PATCH http://localhost:9000/api/comments/2/voted
+#     Content-Type: application/json
+
+#     {
+#         "username": "tickle122"
+#     }

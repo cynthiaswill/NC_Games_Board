@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { client } = require("../socketIO/socketUser");
 
 exports.selectComments = async (id, limit = 10, p = 1, queryKeys) => {
   const validQueries = ["limit", "p"];
@@ -99,5 +100,81 @@ exports.updateComment = async (id, vote, body) => {
       status: "404",
       msg: "This comment_id does not exist!",
     });
+  }
+};
+
+exports.getCommentSubsById = async (id) => {
+  try {
+    await client.connect();
+    const database = client.db("My_test_project");
+    const subscriptions = database.collection("comments");
+    const query = { comment_id: `${id}` };
+    const options = {
+      projection: { votedUsers: 1 },
+    };
+    const list = await subscriptions.findOne(query, options);
+    if (list) {
+      console.log(list.votedUsers, "voted_user_list from db");
+      return list.votedUsers;
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.dir(error);
+  }
+};
+
+exports.subscribeCommentById = async (id, username) => {
+  try {
+    await client.connect();
+
+    const database = client.db("My_test_project");
+    const subscriptions = database.collection("comments");
+    const filter = { comment_id: `${id}` };
+    // this option instructs the method to create a document if no documents match the filter
+    const list = await subscriptions.findOne(filter, { projection: { votedUsers: 1 } });
+
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: {
+        votedUsers: list ? [...list.votedUsers, username] : [username],
+      },
+    };
+    const result = await subscriptions.updateOne(filter, updateDoc, options);
+    console.log(
+      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
+    );
+    return { votedUsers: list ? [...list.votedUsers, username] : [username] };
+  } catch (error) {
+    console.dir(error);
+  }
+};
+
+exports.unsubscribeCommentById = async (id, username) => {
+  try {
+    await client.connect();
+
+    const database = client.db("My_test_project");
+    const subscriptions = database.collection("comments");
+    const filter = { comment_id: `${id}` };
+    // this option instructs the method to create a document if no documents match the filter
+    const list = await subscriptions.findOne(filter, { projection: { votedUsers: 1 } });
+
+    const options = { upsert: true };
+    const updatedUsers = list ? list.votedUsers.filter((name) => name !== username) : [];
+    const updateDoc = {
+      $set: {
+        votedUsers: [...updatedUsers],
+      },
+    };
+    const result = await subscriptions.updateOne(filter, updateDoc, options);
+    console.log(
+      `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
+    );
+    return {
+      votedUsers: [...updatedUsers],
+    };
+  } catch (error) {
+    console.dir(error);
   }
 };
