@@ -12,6 +12,6 @@ usersRouter.route("/").get(getUsers).post(postUser).all(handleBadMethods);
 
 usersRouter.route("/:username").get(getUser).patch(patchUser).all(handleBadMethods);
 
-usersRouter.route(":username/watched").get(getWatchedByUsername).all(handleBadMethods);
+usersRouter.route("/:username/watched").get(getWatchedByUsername).all(handleBadMethods);
 
 module.exports = usersRouter;

@@ -159,3 +159,6 @@
 #     {
 #         "username": "tickle122"
 #     }
+
+
+# GET http://localhost:9000/api/users/tickle122/watched
