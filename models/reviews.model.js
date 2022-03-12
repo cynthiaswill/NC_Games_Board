@@ -272,6 +272,8 @@ exports.watchById = async (id, username) => {
     await client.connect();
 
     const database = client.db("My_test_project");
+
+    // insert subscribed users into review's collection
     const subscriptions = database.collection("subscriptions");
     const filter = { review_id: `${id}` };
     // this option instructs the method to create a document if no documents match the filter
@@ -288,9 +290,29 @@ exports.watchById = async (id, username) => {
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
+
+    // insert subscribed reviews into user's collection
+    const subscriptions2 = database.collection("users");
+    const filter2 = { username: `${username}` };
+    const list2 = await subscriptions2.findOne(filter2, {
+      projection: { watchedReviews: 1 },
+    });
+    const updateDoc2 = {
+      $set: {
+        watchedReviews:
+          list2 && list2.watchedReviews ? [...list2.watchedReviews, id] : [id],
+      },
+    };
+    const result2 = await subscriptions2.updateOne(filter2, updateDoc2, options);
+    console.log(
+      `${result2.matchedCount} document(s) matched the filter2, updated ${result2.modifiedCount} document(s)`
+    );
+
     return {
       watchedUsers:
         list && list.watchedUsers ? [...list.watchedUsers, username] : [username],
+      watchedReviews:
+        list2 && list2.watchedReviews ? [...list2.watchedReviews, id] : [id],
     };
   } catch (error) {
     console.dir(error);
@@ -302,6 +324,8 @@ exports.unwatchById = async (id, username) => {
     await client.connect();
 
     const database = client.db("My_test_project");
+
+    // remove unsubscribed user from review's collection
     const subscriptions = database.collection("subscriptions");
     const filter = { review_id: `${id}` };
     // this option instructs the method to create a document if no documents match the filter
@@ -321,8 +345,30 @@ exports.unwatchById = async (id, username) => {
     console.log(
       `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`
     );
+
+    // remove unsubscribed review from user's collection
+    const subscriptions2 = database.collection("users");
+    const filter2 = { username: `${username}` };
+    const list2 = await subscriptions2.findOne(filter2, {
+      projection: { watchedReviews: 1 },
+    });
+    const updatedReviews =
+      list2 && list2.watchedReviews
+        ? list2.watchedReviews.filter((review_id) => review_id !== id)
+        : [];
+    const updateDoc2 = {
+      $set: {
+        watchedReviews: [...updatedReviews],
+      },
+    };
+    const result2 = await subscriptions2.updateOne(filter2, updateDoc2, options);
+    console.log(
+      `${result2.matchedCount} document(s) matched the filter2, updated ${result2.modifiedCount} document(s)`
+    );
+
     return {
       watchedUsers: [...updatedUsers],
+      watchedReviews: [...updatedReviews],
     };
   } catch (error) {
     console.dir(error);
